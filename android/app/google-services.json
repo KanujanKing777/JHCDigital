@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "188778400352",
+    "project_id": "latestjhcapp",
+    "storage_bucket": "latestjhcapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188778400352:android:25bec576486963e9085105",
+        "android_client_info": {
+          "package_name": "com.example.jhc_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8rIaBSL6oLMgA95CepMU9kBQZYFRJ0aU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
