@@ -25,6 +25,7 @@ class _ShopAdmin extends State<ShopAdmin> {
   String url = "";
   String imageUrl = "";
   String txt = "";
+  String description = "";
   void showRecordsSavedAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -51,8 +52,6 @@ class _ShopAdmin extends State<ShopAdmin> {
           
           mainAxisAlignment: MainAxisAlignment.end, 
           children: [
-            
-
             Container(
               width: MediaQuery.of(context).size.width,
               height: 75,
@@ -125,6 +124,30 @@ class _ShopAdmin extends State<ShopAdmin> {
               ),
             ),
             SizedBox(height: 15,),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 75,
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(),
+                  hintText: "Product Description",
+                                hintStyle: TextStyle(color: Colors.black)
+
+                ),
+                onChanged: (value){
+                  setState(() {
+                    description = value;
+                  });
+                },
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            SizedBox(height: 15,),
             FloatingActionButton(
               backgroundColor: Colors.white,
               child: Icon(Icons.add),
@@ -132,15 +155,16 @@ class _ShopAdmin extends State<ShopAdmin> {
                 showRecordsSavedAlert(context);     
                 try {
               // Sample data to add
+              txt = "$txt, $description";
               final data = {
-                'url': url,
+                'price': url,
                 'image': imageUrl,
                 'text': txt,
-                'timestamp': FieldValue.serverTimestamp(),
               };
+            DatabaseReference ref1 = FirebaseDatabase.instance.ref('Products/$txt');
 
+              await ref1.set(data);
               // Adding data to the Firestore 'exampleCollection'
-              await firestore.collection('exampleCollection').add(data);
               print('Data added successfully!');
             } catch (e) {
               print('Error adding data: $e');

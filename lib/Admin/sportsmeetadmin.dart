@@ -20,18 +20,22 @@ class _CricketAdminState extends State<Sportsmeetadmin> {
     "Kaasipillai",
     "Naagalingam"
   ];
-  String firstHouse = "Winning House"; // Set as nullable to handle initial state
-String secondHouse = "Winning House";
-String thirdHouse = "Winning House";
-String fourthHouse = "Winning House";
-String fifthHouse = "Winning House";
+  String firstHouse =
+      "Winning House"; // Set as nullable to handle initial state
+  String secondHouse = "Winning House";
+  String thirdHouse = "Winning House";
+  String fourthHouse = "Winning House";
+  String fifthHouse = "Winning House";
   // Selected value
 
   DateTime? selectedDate;
   String MatchName = '';
   String description = 'sample';
+  String imageLink = '';
   String team1logo = '';
+  String url = '';
   String team2logo = '';
+  bool ended = false;
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -48,26 +52,47 @@ String fifthHouse = "Winning House";
   }
 
   Future<void> addDataToFirestore() async {
-    try {
-      // Sample data to add
-      final data = {
-        'title': MatchName,
-        'description': description,
-        'first': firstHouse,
-        'second': secondHouse,
-        'third': thirdHouse,
-        'fourth': fourthHouse,
-        'fifth': fifthHouse,
-      };
-      DatabaseReference ref1 =
-          FirebaseDatabase.instance.ref('Sportsmeet2024/$MatchName');
+    if (ended == false) {
+      try {
+        // Sample data to add
+        final data = {
+          'title': MatchName,
+          'image': imageLink,
+          'description': description,
+          'first': firstHouse,
+          'second': secondHouse,
+          'third': thirdHouse,
+          'fourth': fourthHouse,
+          'fifth': fifthHouse,
+        };
+        DatabaseReference ref1 =
+            FirebaseDatabase.instance.ref('Sportsmeet2024/$MatchName');
 
-      await ref1.set(data);
-      // Adding data to the Firestore 'exampleCollection'
-      await firestore.collection('exampleCollection').add(data);
-      print('Data added successfully!');
-    } catch (e) {
-      print('Error adding data: $e');
+        await ref1.set(data);
+        // Adding data to the Firestore 'exampleCollection'
+        print('Data added successfully!');
+      } catch (e) {
+        print('Error adding data: $e');
+      }
+    } else {
+       try {
+              // Sample data to add
+              
+              final data = {
+                'url': url,
+                'image': imageLink,
+                'text': description,
+              };
+
+              // Adding data to the Firestore 'exampleCollection'
+              DatabaseReference ref1 =
+            FirebaseDatabase.instance.ref('URLs/Sportsmeet');
+
+        await ref1.set(data);
+              print('Data added successfully!');
+            } catch (e) {
+              print('Error adding data: $e');
+            }
     }
   }
 
@@ -102,6 +127,29 @@ String fifthHouse = "Winning House";
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      '  Sportsmeet Ended : ',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: MediaQuery.of(context).size.width * 0.04),
+                    ),
+                    Switch(
+                      value: ended,
+                      onChanged: (value) {
+                        setState(() {
+                          ended = true;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16,),
               TextField(
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -142,170 +190,207 @@ String fifthHouse = "Winning House";
               SizedBox(
                 height: 16,
               ),
+              TextField(
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  border: OutlineInputBorder(),
+                  hintText: 'Image Link',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+                style: TextStyle(color: Colors.black),
+                onChanged: (value) {
+                  setState(() {
+                    imageLink = value;
+                  });
+                },
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              TextField(
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  border: OutlineInputBorder(),
+                  hintText: 'Social Media URL',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+                style: TextStyle(color: Colors.black),
+                onChanged: (value) {
+                  setState(() {
+                    url = value;
+                  });
+                },
+              ),
+              SizedBox(
+                height: 16,
+              ),
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.all(8.0),
-                                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-
-                child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "First",
-                              style: TextStyle(fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                            ),
-                            DropdownButton<String>(
-                              value: firstHouse,
-                              style: TextStyle(color: Colors.black),
-                              items: Teams.map((String name) {
-                                return DropdownMenuItem<String>(
-                                  value: name,
-                                  child: Text(name),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  firstHouse = newValue ?? "";
-                                });
-                              },
-                              dropdownColor:
-                                  const Color.fromARGB(255, 235, 233, 233),
-                            ),
-                          ],
-                        ),),
-                        Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.all(8.0),
-                                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-
-                child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Second",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                            ),
-                            DropdownButton<String>(
-                              value: secondHouse,
-                              style: TextStyle(color: Colors.black),
-                              items: Teams.map((String name) {
-                                return DropdownMenuItem<String>(
-                                  value: name,
-                                  child: Text(name),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  secondHouse = newValue ?? "";
-                                });
-                              },
-                              dropdownColor:
-                                  const Color.fromARGB(255, 235, 233, 233),
-                            ),
-                          ],
-                        ),),
-                        Container(
+                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "First",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    DropdownButton<String>(
+                      value: firstHouse,
+                      style: TextStyle(color: Colors.black),
+                      items: Teams.map((String name) {
+                        return DropdownMenuItem<String>(
+                          value: name,
+                          child: Text(name),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          firstHouse = newValue ?? "";
+                        });
+                      },
+                      dropdownColor: const Color.fromARGB(255, 235, 233, 233),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.all(8.0),
                 margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Third",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                            ),
-                            DropdownButton<String>(
-                              value: thirdHouse,
-                              style: TextStyle(color: Colors.black),
-                              items: Teams.map((String name) {
-                                return DropdownMenuItem<String>(
-                                  value: name,
-                                  child: Text(name),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  thirdHouse = newValue ?? "";
-                                });
-                              },
-                              dropdownColor:
-                                  const Color.fromARGB(255, 235, 233, 233),
-                            ),
-                          ],
-                        ),),
-                        Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Second",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    DropdownButton<String>(
+                      value: secondHouse,
+                      style: TextStyle(color: Colors.black),
+                      items: Teams.map((String name) {
+                        return DropdownMenuItem<String>(
+                          value: name,
+                          child: Text(name),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          secondHouse = newValue ?? "";
+                        });
+                      },
+                      dropdownColor: const Color.fromARGB(255, 235, 233, 233),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.all(8.0),
-                                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-
-                child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Fourth",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                            ),
-                            DropdownButton<String>(
-                              value: fourthHouse,
-                              style: TextStyle(color: Colors.black),
-                              items: Teams.map((String name) {
-                                return DropdownMenuItem<String>(
-                                  value: name,
-                                  child: Text(name),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  fourthHouse = newValue ?? "";
-                                });
-                              },
-                              dropdownColor:
-                                  const Color.fromARGB(255, 235, 233, 233),
-                            ),
-                          ],
-                        ),),
-                        Container(
+                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Third",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    DropdownButton<String>(
+                      value: thirdHouse,
+                      style: TextStyle(color: Colors.black),
+                      items: Teams.map((String name) {
+                        return DropdownMenuItem<String>(
+                          value: name,
+                          child: Text(name),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          thirdHouse = newValue ?? "";
+                        });
+                      },
+                      dropdownColor: const Color.fromARGB(255, 235, 233, 233),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.all(8.0),
-                                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-
-                child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Fifth" ,
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                            ),
-                            DropdownButton<String>(
-                              value: fifthHouse,
-                              style: TextStyle(color: Colors.black),
-                              items: Teams.map((String name) {
-                                return DropdownMenuItem<String>(
-                                  value: name,
-                                  child: Text(name),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  fifthHouse = newValue ?? "";
-                                });
-                              },
-                              dropdownColor:
-                                  const Color.fromARGB(255, 235, 233, 233),
-                            ),
-                          ],
-                        ),),
-              
-              
+                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Fourth",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    DropdownButton<String>(
+                      value: fourthHouse,
+                      style: TextStyle(color: Colors.black),
+                      items: Teams.map((String name) {
+                        return DropdownMenuItem<String>(
+                          value: name,
+                          child: Text(name),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          fourthHouse = newValue ?? "";
+                        });
+                      },
+                      dropdownColor: const Color.fromARGB(255, 235, 233, 233),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Fifth",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    DropdownButton<String>(
+                      value: fifthHouse,
+                      style: TextStyle(color: Colors.black),
+                      items: Teams.map((String name) {
+                        return DropdownMenuItem<String>(
+                          value: name,
+                          child: Text(name),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          fifthHouse = newValue ?? "";
+                        });
+                      },
+                      dropdownColor: const Color.fromARGB(255, 235, 233, 233),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 16),
-              
               Center(
                 child: ElevatedButton(
                   onPressed: () async {

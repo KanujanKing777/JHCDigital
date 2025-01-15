@@ -49,7 +49,7 @@ class BBMatchPage extends StatelessWidget {
                 Team2Points.add("0");
                 liveScore[key]['Stats'].forEach((key2, value2) {
                   if (liveScore[key]['Stats'][key2]['Shooting Team'] ==
-                      Team1) {
+                      Teams.first) {
                     Team1Points.add(
                         liveScore[key]['Stats'][key2]['Points'].toString());
                     Team1Shooters.add(

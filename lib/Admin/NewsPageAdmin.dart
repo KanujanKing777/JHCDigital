@@ -24,8 +24,20 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
   List<String> normals = ["YouTube"];
   int index = 0;
   String url = "";
-  String imageUrl = "";
+  List<String> images = [];
+  String utube = "";
   String txt = "";
+  final TextEditingController _controller1 = TextEditingController();
+
+
+  void _addString1() {
+    if (_controller1.text.isNotEmpty) {
+      setState(() {
+        images.add(_controller1.text);
+        _controller1.clear();
+      });
+    }
+  }
   void showRecordsSavedAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -49,20 +61,25 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: 75,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
-        child: TextField(
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 32, 32, 32),
+      ),
+      child: SingleChildScrollView(
+      child:Column(
+        children: [
+      TextField(
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white,
               border: OutlineInputBorder(),
               hintText: "News URL",
-                            hintStyle: TextStyle(color: Colors.black)
+                            hintStyle: TextStyle(color: Colors.white)
 
               ),
           onChanged: (value) {
@@ -70,49 +87,36 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
               url = value;
             });
           },
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
-      ),
+      
       SizedBox(
         height: 15,
       ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: 75,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
-        child: TextField(
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(),
-              hintText: "Image URL"  ,            hintStyle: TextStyle(color: Colors.black)
-),
-          onChanged: (value) {
-            setState(() {
-              imageUrl = value;
-            });
-          },
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
+      TextField(
+              controller: _controller1,
+              
+              decoration: InputDecoration(
+                labelText: "Image Urls",
+                hintStyle: TextStyle(color: Colors.white),
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _addString1(),
+                ),
+              ),
+            ),
+      
       SizedBox(
         height: 15,
       ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: 75,
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
-        child: TextField(
+      TextField(
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white,
               border: OutlineInputBorder(),
               hintText: "Text to be displayed",
-              hintStyle: TextStyle(color: Colors.black)
+              hintStyle: TextStyle(color: Colors.white)
           ),
               
           onChanged: (value) {
@@ -120,14 +124,34 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
               txt = value;
             });
           },
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
+      
+      SizedBox(
+        height: 15,
       ),
+     TextField(
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+              filled: true,
+              border: OutlineInputBorder(),
+              hintText: "Youtube Link",
+              hintStyle: TextStyle(color: Colors.white)
+          ),
+              
+          onChanged: (value) {
+            setState(() {
+              utube = value;
+            });
+          },
+          style: TextStyle(color: Colors.white),
+        ),
+      
       SizedBox(
         height: 15,
       ),
       FloatingActionButton(
-          backgroundColor: Colors.white,
+          backgroundColor: Color.fromARGB(255, 3, 44, 65),
           child: Icon(Icons.add),
           onPressed: () async {
             showRecordsSavedAlert(context);
@@ -136,13 +160,16 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
               // Sample data to add
               final data = {
                 'url': url,
-                'image': imageUrl,
+                'images': images,
                 'text': txt,
-                'timestamp': FieldValue.serverTimestamp(),
+                'utube':utube
               };
 
               // Adding data to the Firestore 'exampleCollection'
-              await firestore.collection('exampleCollection').add(data);
+              DatabaseReference ref1 =
+            FirebaseDatabase.instance.ref('URLs/$txt');
+
+        await ref1.set(data);
               print('Data added successfully!');
             } catch (e) {
               print('Error adding data: $e');
@@ -151,6 +178,6 @@ class _NewsPageAdmin extends State<NewsPageAdmin> {
       SizedBox(
         height: 15,
       )
-    ]);
+    ])));
   }
 }

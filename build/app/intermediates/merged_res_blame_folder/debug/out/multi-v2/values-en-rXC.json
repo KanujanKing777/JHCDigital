@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.jhc_app-mergeDebugResources-41:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.example.jhc_app-mergeDebugResources-43:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Kanujan\\.gradle\\caches\\transforms-3\\2899179226daa55ce5e093c91de8f7f3\\transformed\\browser-1.8.0\\res\\values-en-rXC\\values-en-rXC.xml",

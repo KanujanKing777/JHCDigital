@@ -1,0 +1,1 @@
+ C:\\Users\\Kanujan\\Desktop\\JHC\\jhc_app\\.dart_tool\\flutter_build\\58b83f1419084c4276f3d3eb7744a667\\native_assets.yaml: 

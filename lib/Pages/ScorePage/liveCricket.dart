@@ -30,8 +30,8 @@ int Ball = 1;
 num Runs = 0;
 
 String Wicket = "NotOut";
-String Team1 = "Team1";
-String Team2 = "Team2";
+String BattingTeam = "Team1";
+String BallingTeam= "Team2";
 String team1logo = "";
 String team2logo = "";
 List<String> outs = [
@@ -59,6 +59,7 @@ int points = 0;
 int Fouls = 0;
 String ShootingTeam = "";
 String Score = "";
+  List<String> Teams = [BattingTeam, BallingTeam];
 
 bool isMoreInfo = false;
 
@@ -838,6 +839,7 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
                     aspectRatio: 16 / 16,
                     height: screenHeight*0.35,
                     enableInfiniteScroll: true,
+                    autoPlay: false,
                     enlargeCenterPage: true,
                   )
               );
@@ -868,14 +870,14 @@ Future createUser(String name) async {
           FirebaseDatabase.instance.ref('Sports/Cricket/$MatchName/Details');
       final json1 = {
         "Date": selectedDate2,
-        "Team A": Team1,
-        "Team B": Team2,
+        "Team A": Teams.first,
+        "Team B": Teams.last,
         "team1logo": team1logo,
         "team2logo": team2logo
       };
       await ref1.set(json1);
       DatabaseReference ref2 = FirebaseDatabase.instance
-          .ref('Sports/Cricket/${MatchName}/Stats/${Team1}/Over${Over}');
+          .ref('Sports/Cricket/${MatchName}/Stats/${Teams.first}/Over${Over}');
       final json2 = {
         Balls: {
           "baller": Baller,
@@ -888,7 +890,7 @@ Future createUser(String name) async {
       };
       await ref2.set(json2);
       DatabaseReference ref3 = FirebaseDatabase.instance
-          .ref('Sports/Cricket/${MatchName}/Stats/${Team2}/Over${Over}');
+          .ref('Sports/Cricket/${MatchName}/Stats/${Teams.last}/Over${Over}');
       final json3 = {
         Balls: {
           "baller": "Baller",
@@ -903,7 +905,7 @@ Future createUser(String name) async {
       firstTime = false;
     } else {
       DatabaseReference ref2 = FirebaseDatabase.instance
-          .ref('Sports/Cricket/${MatchName}/Stats/${Team1}/Over${Over}');
+          .ref('Sports/Cricket/${MatchName}/Stats/${Teams.first}/Over${Over}');
       final json2 = {
         Balls: {
           "baller": Baller,
@@ -924,8 +926,8 @@ Future createUser(String name) async {
           FirebaseDatabase.instance.ref('Sports/$name/$MatchNameBB/Details');
       final json1 = {
         "Date": selectedDate2,
-        "Team A": Team1,
-        "Team B": Team2,
+        "Team A": Teams.first,
+        "Team B": Teams.last,
         "Team1logo": team1logo,
         "Team2logo": team2logo
       };

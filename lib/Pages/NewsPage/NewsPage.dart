@@ -61,6 +61,7 @@ class NewsPage extends StatelessWidget {
               });
 
               return Container(
+                padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -85,7 +86,7 @@ class NewsPage extends StatelessWidget {
                     itemBuilder: (BuildContext context, index) {
                       return BreakingNewsCard(urls: urls[index], images: imgURLs[index], txts: txts[index]);
                     },
-                  )
+                  ),
                 ],
               ))
     );

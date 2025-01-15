@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jhc_app/Pages/ScorePage/liveCricket.dart';
 import 'package:animated_icon/animated_icon.dart';
+import 'package:jhc_app/Pages/ShopPage/ShopPage.dart';
 import 'package:jhc_app/Pages/infoPage.dart';
 import 'package:jhc_app/widgets/menus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,8 @@ import 'package:jhc_app/Admin/admin.dart';
 import 'package:jhc_app/Pages/NewsPage/NewsPage.dart';
 import 'package:jhc_app/Pages/Calendar/calendar.dart';
 import 'package:jhc_app/Pages/RealHomePage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 Timer? timer;
 final firebaseApp = Firebase.app();
 FirebaseDatabase rtdb = FirebaseDatabase.instanceFor(
@@ -24,15 +27,31 @@ FirebaseDatabase rtdb = FirebaseDatabase.instanceFor(
 
 DatabaseReference ref = FirebaseDatabase.instance.ref('Cricket/');
 final client = true;
+final _firebasemessaging = FirebaseMessaging.instance;
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Handle background messages
+  print("hello");
+  await _firebasemessaging.requestPermission();
+  final FCMtoken = await _firebasemessaging.getToken();
+  print('Background message: ${message.messageId}');
+  print('Token : $FCMtoken');
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final String? deviceToken = "";
+  @override
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,6 +77,37 @@ class MyHomePage extends StatefulWidget {
 final controller = TextEditingController();
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Request notification permissions
+    _firebaseMessaging.requestPermission().then((settings) {
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print("User granted permission");
+      } else {
+        print("User declined or has not accepted permission");
+      }
+    });
+
+    // Display a "Hello World" notification a few seconds after the app opens
+    Timer(Duration(seconds: 5), _sendHelloWorldNotification);
+  }
+
+  void _sendHelloWorldNotification() async {
+    // For demonstration purposes, we're printing the notification instead of sending it via an external service
+    print("Hello World notification sent");
+
+    // This code assumes integration with a proper notification service for real-world usage
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hello World")),
+      );
+    });
+  }
+
     int sselectedIndex = 0;
 
   _MyHomePageState({required this.sselectedIndex});
@@ -91,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  final homepages = [RealHomePage(), LiveScoreWidgetCricket(parameter: false,), NewsPage(), Calendar()];
+  final homepages = [RealHomePage(), LiveScoreWidgetCricket(parameter: false,), NewsPage(), ShopPage()];
   String OOO = "";
   
   @override
@@ -175,33 +225,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 bottomNavigationBar: BottomNavigationBar(
                     selectedLabelStyle: TextStyle(fontSize: 16,), // Define text style for selected label
                     unselectedLabelStyle: TextStyle(fontSize: 16),    
-                    showUnselectedLabels: true,                 
+                    showUnselectedLabels: false,                 
                     backgroundColor: Color.fromARGB(255, 12, 12, 12),
                     unselectedItemColor: Colors.white,
                     currentIndex: sselectedIndex,         
-                    
+                    elevation: MediaQuery.of(context).size.height * 0.1,
                     fixedColor: const Color.fromARGB(255, 68, 208, 255),
                     type: BottomNavigationBarType.fixed,
                     items:  [
                       BottomNavigationBarItem(
                         label: "Home",
-                        icon: Icon(FontAwesomeIcons.home, size:MediaQuery.of(context).size.width * 0.07),
-                        activeIcon: Icon(FontAwesomeIcons.homeAlt, size:MediaQuery.of(context).size.width * 0.07)
+                        icon: Icon(FontAwesomeIcons.house, size:MediaQuery.of(context).size.width * 0.06),
                       ),
                       BottomNavigationBarItem(
                         label: "Sports",
-                        icon: Icon(FontAwesomeIcons.basketball, size:MediaQuery.of(context).size.width * 0.07),
-                        activeIcon: Icon(FontAwesomeIcons.basketball, size:MediaQuery.of(context).size.width * 0.07),
+                        icon: Icon(FontAwesomeIcons.basketball, size:MediaQuery.of(context).size.width * 0.06),
                       ),
                       BottomNavigationBarItem(
                         label: "News",
-                        icon: Icon(FontAwesomeIcons.newspaper, size:MediaQuery.of(context).size.width * 0.07),
-                        activeIcon: Icon(FontAwesomeIcons.solidNewspaper, size:MediaQuery.of(context).size.width * 0.07),
+                        icon: Icon(FontAwesomeIcons.newspaper, size:MediaQuery.of(context).size.width * 0.06),
+                        activeIcon: Icon(FontAwesomeIcons.solidNewspaper, size:MediaQuery.of(context).size.width * 0.06),
                       ),
                       BottomNavigationBarItem(
-                        label: "Calendar",
-                        icon: Icon(FontAwesomeIcons.calendar, size:MediaQuery.of(context).size.width * 0.07),
-                        activeIcon: Icon(FontAwesomeIcons.calendar, size:MediaQuery.of(context).size.width * 0.07)
+                        label: "Shop",
+                        icon: Icon(FontAwesomeIcons.shop, size:MediaQuery.of(context).size.width * 0.06),
                       ),
                     ],
                     onTap: (int indexOfItem) {

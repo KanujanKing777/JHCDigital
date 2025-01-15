@@ -12,6 +12,9 @@ class CricketAdmin extends StatefulWidget {
 }
 
 class _CricketAdminState extends State<CricketAdmin> {
+  List<String> Teams = [BattingTeam, BallingTeam];
+  List<String> team1Players = [];
+  List<String> team2Players = [];
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
@@ -26,9 +29,26 @@ class _CricketAdminState extends State<CricketAdmin> {
       });
     }
   }
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
 
-  File? _team1logo;
-  File? _team2logo;
+  void _addString1() {
+    if (_controller1.text.isNotEmpty) {
+      setState(() {
+        team1Players.add(_controller1.text);
+        _controller1.clear();
+      });
+    }
+  }
+  void _addString2() {
+    if (_controller2.text.isNotEmpty) {
+      setState(() {
+        team2Players.add(_controller2.text);
+        _controller2.clear();
+      });
+    }
+  }
+
 void showRecordsSavedAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -49,50 +69,7 @@ void showRecordsSavedAlert(BuildContext context) {
       },
     );
   }
-  Future<void> _getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _team1logo = File(pickedFile.path);
-      });
-      uploadImage(_team1logo, Team1);
-
-    }
-  }
-
-  Future<void> _getImage2() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _team2logo = File(pickedFile.path);
-      });
-      uploadImage(_team2logo, Team2);
-    }
-  }
-
- Future<String> uploadImage(File?imageFile, String team) async {
-  try {
-    if(imageFile != null){
-      final storageRef = FirebaseStorage.instance.ref();
-      final imageRef = storageRef.child('images/${imageFile.path.split('/').last}');
-
-      await imageRef.putFile(imageFile);
-      final downloadURL = await imageRef.getDownloadURL();
-
-      return downloadURL;
-    }
-    else{
-      return " ";
-    }
-  } catch (e) {
-    print('Error uploading image: $e');
-    return "akdfj";
-  }
-}
+  
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +85,16 @@ void showRecordsSavedAlert(BuildContext context) {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Divider(height: 50,thickness: 2, color: Colors.white,),
             Container(
-              color: Colors.white,
+              color: Colors.black,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     '  New Match : ',
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width * 0.04),
                   ),
                   Switch(
@@ -135,9 +113,10 @@ void showRecordsSavedAlert(BuildContext context) {
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
+                fillColor: Colors.black,
+                border:UnderlineInputBorder(),
                 hintText: 'Match Name',
+                hintStyle: TextStyle(color: Colors.white)
               ),
               onChanged: (value) {
                 setState(() {
@@ -149,15 +128,18 @@ void showRecordsSavedAlert(BuildContext context) {
             TextField(
               controller: TextEditingController(
                   text: selectedDate.toLocal().toString().split(' ')[0]),
+              style: TextStyle(color: Colors.white),    
               readOnly: true,
               onTap: () {
                 _selectDate(context);
               },
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
+                fillColor: Colors.black,
+                
                 hintText: 'Date',
+                                hintStyle: TextStyle(color: Colors.white)
+
               ),
             ),
             SizedBox(height: 16),
@@ -165,13 +147,18 @@ void showRecordsSavedAlert(BuildContext context) {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Batting Team',
+                fillColor: Colors.black,
+                
+                hintText: 'Team 1',
+                hintStyle: TextStyle(color: Colors.white)
+
               ),
               onChanged: (value) {
                 setState(() {
-                  Team1 = value;
+                  BattingTeam = value;
+                });
+                setState(() {
+                  Teams.first = value;
                 });
               },
             ),
@@ -180,159 +167,32 @@ void showRecordsSavedAlert(BuildContext context) {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Balling Team',
+                fillColor: Colors.black,
+                
+                hintText: 'Team 2',
+                                hintStyle: TextStyle(color: Colors.white)
+
               ),
               onChanged: (value) {
                 setState(() {
-                  Team2 = value;
+                  BallingTeam = value;
                 });
-              },
-            ),
-            SizedBox(height: 16),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Over',
-              ),
-              onChanged: (value) {
                 setState(() {
-                  Over = int.parse(value);
+                  Teams.last = value;
                 });
               },
             ),
-            SizedBox(height: 16),
-            Container(
-                margin: EdgeInsets.all(0),
-                padding: EdgeInsets.all(5),
-                color: Colors.white,
-                width: 360,
-                child: Row(
-                  children: [
-                    Text("Ball"),
-                    DropdownButton<int>(
-                      value: Ball,
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          Ball = newValue ?? 1;
-                        });
-                      },
-                      items: numbers.map((int number) {
-                        return DropdownMenuItem<int>(
-                          value: number,
-                          child: Text(" ${number}"),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                )),
-            SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Batter',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  Batter = value;
-                });
-              },
-            ),
-            SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Baller',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  Baller = value;
-                });
-              },
-            ),
-            SizedBox(height: 16),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Runs',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  Runs = num.parse(value);
-                });
-              },
-            ),
-            SizedBox(height: 16),
-            TextField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: 'Extras',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  Extras = int.parse(value);
-                });
-              },
-            ),
-            SizedBox(height: 16),
-            Container(
-              margin: EdgeInsets.all(0),
-              padding: EdgeInsets.all(5),
-              color: Colors.white,
-              width: 360,
-              child: DropdownButton<String>(
-                value: Wicket,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    Wicket = newValue ?? '';
-                  });
-                },
-                items: outs.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList(),
-              ),
-            ),
-            SizedBox(height: 16),
-            if (Wicket != "NotOut" && Wicket != "Bowled" && Wicket != "LBW")
-              TextField(
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  hintText: '$Wicket by',
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    OutBy = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
+            SizedBox(height: 16,),
             TextField(
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: '$Team1 logo URL',
+                fillColor: Colors.black,
+                labelStyle: TextStyle(color: Colors.black),
+                
+                hintText: '${Teams.first} logo URL',
+                                hintStyle: TextStyle(color: Colors.white)
+
               ),
               onChanged: (value) {
                 setState(() {
@@ -345,9 +205,11 @@ void showRecordsSavedAlert(BuildContext context) {
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(),
-                hintText: '$Team2 logo URL',
+                fillColor: Colors.black,
+                
+                hintText: '${Teams.last} logo URL',
+                                hintStyle: TextStyle(color: Colors.white)
+
               ),
               onChanged: (value) {
                 setState(() {
@@ -355,9 +217,314 @@ void showRecordsSavedAlert(BuildContext context) {
                 });
               },
             ),
-            SizedBox(
-              height: 16,
+            SizedBox(height: 16,),
+            TextField(
+              controller: _controller1,
+              decoration: InputDecoration(
+                labelText: "${Teams.first} Players",
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _addString1(),
+                ),
+              ),
             ),
+            SizedBox(height: 16,),
+            TextField(
+              controller: _controller2,
+              decoration: InputDecoration(
+                labelText: "${Teams.last} Players",
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _addString2(),
+                ),
+              ),
+            ),
+            Divider(height: 50,thickness: 2, color: Colors.white,),
+            Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Batting Team", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    DropdownButton<String>(
+                      value: BattingTeam,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          BallingTeam = BattingTeam;
+                          BattingTeam = newValue ?? BattingTeam;
+                          
+                        });
+                       
+                      },
+                      items: Teams.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              ),
+                          SizedBox(height: 16),
+
+            
+          Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Bowling Team", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    DropdownButton<String>(
+                      value: BallingTeam,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          BattingTeam = BallingTeam;
+                          BallingTeam = newValue ?? BallingTeam;
+                        });
+                      },
+                      items: Teams.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              ),
+                          SizedBox(height: 16),
+
+            
+            
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.black,
+                
+                hintText: 'Over',
+                                hintStyle: TextStyle(color: Colors.white)
+
+              ),
+              onChanged: (value) {
+                setState(() {
+                  Over = int.parse(value);
+                });
+              },
+            ),
+            SizedBox(height: 16),
+            Container(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Ball", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    DropdownButton<int>(
+                      value: Ball,
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          Ball = newValue ?? 1;
+                        });
+                      },
+                      items: numbers.map((int number) {
+                        return DropdownMenuItem<int>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )),
+            SizedBox(height: 16),
+            SizedBox(height: 16),
+
+            
+          Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Batter: $Batter  ", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    (BattingTeam == Teams.first)?
+                    DropdownButton<String>(
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          Batter = newValue ?? Batter;
+                          
+                        });
+                      },
+                      items: team1Players.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ):
+                    DropdownButton<String>(
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          Batter = newValue ?? Batter;
+                        });
+                      },
+                      items: team2Players.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              ),
+                          SizedBox(height: 16),
+
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Baller: $Baller  ", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    (BallingTeam == Teams.last)?DropdownButton<String>(
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          Baller = newValue ?? Baller;
+                        });
+                      },
+                      items: team2Players.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ):DropdownButton<String>(
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          Baller = newValue ?? Baller;
+                        });
+                      },
+                      items: team1Players.map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              ),
+            
+            SizedBox(height: 16),
+            
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.black,
+                
+                hintText: 'Runs',
+                                hintStyle: TextStyle(color: Colors.white)
+
+              ),
+              onChanged: (value) {
+                setState(() {
+                  Runs = num.parse(value);
+                });
+              },
+            ),
+            SizedBox(height: 16),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.black,
+                
+                hintText: 'Extras',
+                                hintStyle: TextStyle(color: Colors.white)
+
+              ),
+              onChanged: (value) {
+                setState(() {
+                  Extras = int.parse(value);
+                });
+              },
+            ),
+            SizedBox(height: 16),
+            Container(
+              margin: EdgeInsets.all(0),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),              width: 360,
+              child: DropdownButton<String>(
+                value: Wicket,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    Wicket = newValue ?? '';
+                  });
+                },
+                items: outs.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item, style: TextStyle(color: Colors.white),),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: 16),
+            if (Wicket != "NotOut" && Wicket != "Bowled" && Wicket != "LBW")
+              TextField(
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.black,
+                  
+                  hintText: '$Wicket by',
+                                  hintStyle: TextStyle(color: Colors.white)
+
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  setState(() {
+                    OutBy = value;
+                  });
+                },
+              ),
+              
             Container(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
@@ -367,7 +534,7 @@ void showRecordsSavedAlert(BuildContext context) {
                   showRecordsSavedAlert(context);
                   createUser("Cricket");
                 },
-                child: Icon(
+                child:Icon(
                   Icons.add,
                   color: Colors.white,
                 ),

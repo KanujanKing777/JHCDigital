@@ -10,6 +10,8 @@ class BasketballAdmin extends StatefulWidget {
 }
 
 class _CricketAdminState extends State<BasketballAdmin> {
+  String Team1 = "";
+  String Team2 = "";
   void showRecordsSavedAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -58,36 +60,51 @@ Future<void> _selectDatebb(BuildContext context) async {
     });
   }
 }
+final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
+  List<String> team1Players = [];
+  List<String> team2Players = [];
 
-  
+  void _addString1() {
+    if (_controller1.text.isNotEmpty) {
+      setState(() {
+        team1Players.add(_controller1.text);
+        _controller1.clear();
+      });
+    }
+  }
+  void _addString2() {
+    if (_controller2.text.isNotEmpty) {
+      setState(() {
+        team2Players.add(_controller2.text);
+        _controller2.clear();
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
 
     return Container(
-            height:200,
-            width: double.infinity,
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(0),
-            padding: const EdgeInsets.all(25),
-            
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 11, 86, 147),
-              border: Border.all(color: Colors.black, width: 0),
-              borderRadius: BorderRadius.circular(0),
-            ),
-            transform: Matrix4.rotationZ(0),
-            child: SingleChildScrollView(
+      height: 200,
+      width: double.infinity,
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 32, 32, 32),
+      ),
+      child: SingleChildScrollView(
               child: Column(
 
                 children: [
                   Container(
-                     color: Colors.white,
+                     color: Colors.black,
                      child: Row(
                      
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text('  New Match : ', style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width * 0.04),),
                       Switch(
                         value: firstTime,
@@ -105,9 +122,11 @@ Future<void> _selectDatebb(BuildContext context) async {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
                       hintText: 'Match Name',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                     onChanged: (value){
                       setState(() {
@@ -125,9 +144,11 @@ Future<void> _selectDatebb(BuildContext context) async {
                     },
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
                       hintText: 'Date',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                   ),
                   SizedBox(height:16),
@@ -136,15 +157,18 @@ Future<void> _selectDatebb(BuildContext context) async {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
                       hintText: 'Team A',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                     onChanged: (value){
                       setState(() {
-                        Team1 = value;
+                        BattingTeam = value;
                         normals[0] = value;
                         ShootingTeam = value;
+                        Team1 = value;
                       });
                     },
                   ),
@@ -153,80 +177,17 @@ Future<void> _selectDatebb(BuildContext context) async {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
                       hintText: 'Team B',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                     onChanged: (value){
                       setState(() {
-                        Team2 = value;
+                        BallingTeam = value;
                         normals[1] = value;
-                      });
-                    },
-                  ),
-
-                  SizedBox(height: 16),
-
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: 'Points',
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        points = int.parse(value);
-                      });
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: 'Shooter',
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        Shooter = value;
-                      });
-                    },
-                  ),
-                  SizedBox(height:16),
-
-                  Container(
-                    margin:EdgeInsets.all(0),
-                    padding:EdgeInsets.all(5),
-                    color:Colors.white,
-                    width:360,
-                    child:  DropdownButton<String>(
-                      value: normals.first, // Initial selected value
-                      onChanged: (String? newValue) {
-                        // Handle dropdown value change
-                        ShootingTeam = newValue.toString();
-                      },
-                      items: normals.map((team) => DropdownMenuItem<String>(
-                                value: team,
-                                child: Text(team),
-                      )).toList(),
-                    ),
-                  ),
-                  SizedBox(height:16),
-
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: 'Fouls',
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        Fouls = int.parse(value);
+                        Team2 = value;
                       });
                     },
                   ),
@@ -235,9 +196,11 @@ Future<void> _selectDatebb(BuildContext context) async {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
-                      hintText: '$Team1 logo URL',
+                      hintText: '${Team1} logo URL',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                     onChanged: (value){
                       setState(() {
@@ -250,9 +213,11 @@ Future<void> _selectDatebb(BuildContext context) async {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Colors.black,
                       border: OutlineInputBorder(),
-                      hintText: '$Team2 logo URL',
+                      hintText: '${Team2} logo URL',
+                                      hintStyle: TextStyle(color: Colors.white)
+
                     ),
                     onChanged: (value){
                       setState(() {
@@ -260,7 +225,140 @@ Future<void> _selectDatebb(BuildContext context) async {
                       });
                     },
                   ),
+                                    SizedBox(height: 16),
+                                    TextField(
+              controller: _controller1,
+              decoration: InputDecoration(
+                labelText: "${Team1} Players",
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _addString1(),
+                ),
+              ),
+            ),
+            SizedBox(height: 16,),
+                  TextField(
+              controller: _controller2,
+              decoration: InputDecoration(
+                labelText: "${Team2} Players",
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _addString2(),
+                ),
+              ),
+            ),
+            SizedBox(height: 16,),
 
+            Divider(height: 50,thickness: 2, color: Colors.white,),
+
+                  SizedBox(height: 16),
+
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                      hintText: 'Points',
+                                      hintStyle: TextStyle(color: Colors.white)
+
+                    ),
+                    onChanged: (value){
+                      setState(() {
+                        points = int.parse(value);
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(children: [
+                    Text(' Shooting Team : ', style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.04),),
+                  Container(
+                    margin:EdgeInsets.all(0),
+                    padding:EdgeInsets.all(5),
+                    color:Colors.black,
+                    width:150,
+                    child:  DropdownButton<String>(
+                      value: ShootingTeam,
+                      onChanged: (String? newValue) {
+                        // Handle dropdown value change
+                        setState(() {
+                          ShootingTeam = newValue ?? ShootingTeam;
+                          
+                        });
+                      },
+                      items: normals.map((team) => DropdownMenuItem<String>(
+                                value: team,
+                                child: Text(team, style: TextStyle(color: Colors.white),),
+                      )).toList(),
+                    ),
+                  ),
+                  ],),),
+                  SizedBox(height: 16,),
+                  Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                
+                width: 360,
+                child: Row(
+                  children: [
+                    Text(" Shooter:", style: TextStyle(color: Colors.white, fontSize: 18),),
+                    SizedBox(width: 15,),
+                    DropdownButton<String>(
+                      value: Shooter,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          Shooter = newValue ?? Shooter;
+                          
+                        });
+                      },
+                      items: [...team1Players, ...team2Players].map((String number) {
+                        return DropdownMenuItem<String>(
+                          value: number,
+                          child: Text(" ${number}", style: TextStyle(color: Colors.white),),
+                        );
+                      }).toList(),
+                    )
+                    
+                  ],
+                )
+              ),
+                          SizedBox(height: 16),
+                  
+                  
+                  SizedBox(height:16),
+
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(),
+                      hintText: 'Fouls',
+                                      hintStyle: TextStyle(color: Colors.white)
+
+                    ),
+                    onChanged: (value){
+                      setState(() {
+                        Fouls = int.parse(value);
+                      });
+                    },
+                  ),
+                  
                   SizedBox(height: 16,),
                   Container(
                     alignment: Alignment.bottomRight,
@@ -278,9 +376,7 @@ Future<void> _selectDatebb(BuildContext context) async {
                   
                 ],
               ),
-            ),
-          
-          );
+            ));
 
   }
 }
