@@ -11,9 +11,6 @@ import 'package:jhc_app/Pages/ShopPage/ShopPage.dart';
 import 'package:jhc_app/Pages/infoPage.dart';
 import 'package:jhc_app/widgets/menus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jhc_app/Admin/cricketAdmin.dart';
-import 'package:jhc_app/Admin/basketballAdmin.dart';
-import 'package:jhc_app/Admin/admin.dart';
 import 'package:jhc_app/Pages/NewsPage/NewsPage.dart';
 import 'package:jhc_app/Pages/Calendar/calendar.dart';
 import 'package:jhc_app/Pages/RealHomePage.dart';
@@ -111,43 +108,16 @@ class _MyHomePageState extends State<MyHomePage> {
     int sselectedIndex = 0;
 
   _MyHomePageState({required this.sselectedIndex});
-  Future<void> _selectDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
+  
 
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectDatebb(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null) {
-      setState(() {
-        selectedDateBB = picked;
-      });
-    }
-  }
+  
 
   final homepages = [RealHomePage(), LiveScoreWidgetCricket(parameter: false,), NewsPage(), ShopPage()];
   String OOO = "";
   
   @override
   Widget build(BuildContext context) {
-    return client
-        ? MaterialApp(
+    return MaterialApp(
             title: 'JHC',
             theme: ThemeData.dark(),
             supportedLocales: {const Locale('en', '')},
@@ -205,23 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                   elevation: 0,
                 ),
-                body: client
-                    ? OrientationBuilder(builder: (context, orientation) {
+                body: OrientationBuilder(builder: (context, orientation) {
                         if (orientation == Orientation.landscape) {
                           return homepages.elementAt(sselectedIndex);
                         } else {
                           return homepages.elementAt(sselectedIndex);
                         }
-                      })
-                    : TabBarView(
-                        children: [
-                          CricketAdmin(),
-                          BasketballAdmin(),
-                          BasketballAdmin(),
-                          BasketballAdmin(),
-                          BasketballAdmin(),
-                        ],
-                      ),
+                      }),
+                    
                 bottomNavigationBar: BottomNavigationBar(
                     selectedLabelStyle: TextStyle(fontSize: 16,), // Define text style for selected label
                     unselectedLabelStyle: TextStyle(fontSize: 16),    
@@ -340,9 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       //
                     }),
               ),
-            ))
-        : AdminPage(
-            title: "JHC Sports App (Admin)",
-          );
+            ));
+        
   }
 }

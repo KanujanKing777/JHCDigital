@@ -50,7 +50,7 @@ class NewsPage extends StatelessWidget {
                 if (!fun.isEmpty) {
                   urls.add(fun);
                 }
-                String funi = urllists[index]['image'];
+                String funi = urllists[index]['images'][0];
                 if (!funi.isEmpty) {
                   imgURLs.add(funi);
                 }

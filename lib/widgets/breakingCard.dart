@@ -9,6 +9,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class BreakingNewsCard extends StatefulWidget {
   String urls = "";
+  List<String>? imglist = [""];
   String images = "";
   String txts = "";
   String? description = "";
@@ -26,7 +27,8 @@ class BreakingNewsCard extends StatefulWidget {
       this.first,
       this.fourth,
       this.second,
-      this.third});
+      this.third,
+      this.imglist});
 
   @override
   State<BreakingNewsCard> createState() => _BreakingNewsCardState(
@@ -38,21 +40,17 @@ class BreakingNewsCard extends StatefulWidget {
       second: second ?? "",
       third: third ?? "",
       fourth: fourth ?? "",
-      fifth: fifth ?? "");
+      fifth: fifth ?? "",
+      imglist: imglist ?? [""]);
 }
 
-final List<String> imageUrls = [
-'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
 
-];
 
 class _BreakingNewsCardState extends State<BreakingNewsCard> {
   String urls = "";
   String images = "";
   String txts = "";
+  List<String> imglist = [""];
   String description = "";
   String first = "";
   String second = "";
@@ -76,7 +74,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
       required this.first,
       required this.fourth,
       required this.second,
-      required this.third});
+      required this.third,
+      required this.imglist});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -171,12 +170,12 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                                                             crossAxisCount:
                                                                 1, // Number of columns
                                                             crossAxisSpacing:
-                                                                8.0,
+                                                                10.0,
                                                             mainAxisSpacing:
-                                                                8.0,
+                                                                10.0,
                                                           ),
                                                           itemCount:
-                                                              imageUrls.length,
+                                                              imglist.length-1,
                                                           itemBuilder:
                                                               (context, index) {
                                                             return GestureDetector(
@@ -188,8 +187,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                                                                             12.0),
                                                                 child: Image
                                                                     .network(
-                                                                  imageUrls[
-                                                                      index],
+                                                                  imglist[
+                                                                      index+1].substring(1),
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 ),

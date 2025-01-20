@@ -1,4 +1,4 @@
-#Tue Jan 14 12:51:01 IST 2025
+#Sun Jan 19 17:13:23 IST 2025
 base.0=C\:\\Users\\Kanujan\\Desktop\\JHC\\jhc_app\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

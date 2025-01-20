@@ -33,6 +33,7 @@ class NewsPageHome extends StatelessWidget {
           Map<String, dynamic> urllists = json.decode(jsonData);
           List<String> urls = [];
           List<String> imgURLs = [];
+          List<List<String>> imgURLlists = [];
           List<String> txts = [];
 
           urllists.forEach((index, value) {
@@ -40,21 +41,24 @@ class NewsPageHome extends StatelessWidget {
             if (!fun.isEmpty) {
               urls.add(fun);
             }
-            String funi = urllists[index]['image'];
+            String funi = urllists[index]['images'][0];
+                        List<String> funlists = urllists[index]['images'].toString().split(",");
             if (!funi.isEmpty) {
               imgURLs.add(funi);
+              imgURLlists.add(funlists);
             }
             String funt = urllists[index]['text'];
             if (!funt.isEmpty) {
-              txts.add(funt);
+              txts.add(funt.toString());
             }
           });
+           
 
           return 
           carousel_lib.CarouselSlider.builder(
             itemCount: urls.length, 
             itemBuilder: (context, index, id) =>
-                      BreakingNewsCard(urls: urls[index],images: imgURLs[index],txts: txts[index],), 
+                      BreakingNewsCard(urls: urls[index],images: imgURLs[index],txts: txts[index], imglist: imgURLlists[index],), 
             options: carousel_lib.CarouselOptions(
               aspectRatio: 16 / 9,
               height: screenHeight*0.31,
