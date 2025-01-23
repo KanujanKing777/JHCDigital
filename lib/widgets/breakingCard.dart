@@ -1,12 +1,8 @@
-import 'dart:ffi';
 import 'package:jhc_app/Pages/SportsmeetPage/SportsmeetViewPage.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:async';
+import 'package:jhc_app/widgets/interior.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+// ignore: must_be_immutable
 class BreakingNewsCard extends StatefulWidget {
   String urls = "";
   List<String>? imglist = [""];
@@ -18,6 +14,7 @@ class BreakingNewsCard extends StatefulWidget {
   String? third = "";
   String? fourth = "";
   String? fifth = "";
+  String? utube = "";
   BreakingNewsCard(
       {required this.urls,
       required this.images,
@@ -28,7 +25,8 @@ class BreakingNewsCard extends StatefulWidget {
       this.fourth,
       this.second,
       this.third,
-      this.imglist});
+      this.imglist,
+      this.utube});
 
   @override
   State<BreakingNewsCard> createState() => _BreakingNewsCardState(
@@ -41,7 +39,8 @@ class BreakingNewsCard extends StatefulWidget {
       third: third ?? "",
       fourth: fourth ?? "",
       fifth: fifth ?? "",
-      imglist: imglist ?? [""]);
+      imglist: imglist ?? [""],
+      utube: utube ?? "");
 }
 
 
@@ -57,13 +56,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
   String third = "";
   String fourth = "";
   String fifth = "";
-  bool isNumeric(String str) {
-    if (str.startsWith("Rs")) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  String utube = "";
+ 
 
   _BreakingNewsCardState(
       {required this.urls,
@@ -75,7 +69,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
       required this.fourth,
       required this.second,
       required this.third,
-      required this.imglist});
+      required this.imglist,
+      required this.utube});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -98,224 +93,20 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
               : Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Scaffold(
-                            appBar: AppBar(
-                                toolbarHeight: 66,
-                                backgroundColor: Colors.black,
-                                title: Text(
-                                  txts.split(',')[0],
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                            body: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ClipRect(
-                                    child: Image.network(images),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.all(0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: [],
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(0),
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 0, sigmaY: 0),
-                                            child: Container(
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
-                                              child: Center(
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Container(
-                                                          width:
-                                                              double.infinity,
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  15),
-                                                          child: Text(
-                                                            txts.split(',')[1],
-                                                            textAlign: TextAlign
-                                                                .justify,
-                                                            style: TextStyle(
-                                                                fontSize: MediaQuery
-                                                                            .of(
-                                                                                context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.045,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal),
-                                                          )),
-                                                      
-                                                        GridView.builder(
-                                                          shrinkWrap: true, // Ensures the GridView doesn't scroll independently
-                                                          physics: NeverScrollableScrollPhysics(), // Disables GridView scrolling
-                                                          gridDelegate:
-                                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount:
-                                                                1, // Number of columns
-                                                            crossAxisSpacing:
-                                                                10.0,
-                                                            mainAxisSpacing:
-                                                                10.0,
-                                                          ),
-                                                          itemCount:
-                                                              imglist.length-1,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            return GestureDetector(
-                                                              onTap: () {},
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.0),
-                                                                child: Image
-                                                                    .network(
-                                                                  imglist[
-                                                                      index+1].substring(1),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
-                                                      YoutubePlayer(
-                                                        controller:
-                                                            YoutubePlayerController(
-                                                          initialVideoId:
-                                                              "y7T3ax7JPwI",
-                                                          flags:
-                                                              const YoutubePlayerFlags(
-                                                            autoPlay: false,
-                                                            mute: false,
-                                                            controlsVisibleAtStart: false,
-                                                            showLiveFullscreenButton: false,
-                                                            hideControls: false
-                                                          ),
-                                                          
-                                                        ),
-                                                        showVideoProgressIndicator:
-                                                            true,
-                                                        onReady: () {
-                                                          debugPrint(
-                                                              'YouTube Player is ready.');
-                                                        },
-                                                      ),
-
-                                                      SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
-                                                      isNumeric(urls)
-                                                          ? SizedBox(
-                                                              height: 10,
-                                                            )
-                                                          : SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.3,
-                                                              child:
-                                                                  FloatingActionButton(
-                                                                backgroundColor:
-                                                                    const Color
-                                                                        .fromARGB(
-                                                                        31,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                splashColor:
-                                                                    const Color
-                                                                        .fromARGB(
-                                                                        31,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                focusColor:
-                                                                    const Color
-                                                                        .fromARGB(
-                                                                        31,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                hoverColor:
-                                                                    const Color
-                                                                        .fromARGB(
-                                                                        31,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                onPressed:
-                                                                    () async {
-                                                                  final Uri
-                                                                      _url =
-                                                                      Uri.parse(
-                                                                          '$urls');
-                                                                  if (!await launchUrl(
-                                                                      _url)) {
-                                                                    throw Exception(
-                                                                        'Could not launch $_url');
-                                                                  }
-                                                                },
-                                                                child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Text(
-                                                                        "Visit",
-                                                                        style: TextStyle(
-                                                                            fontSize: MediaQuery.of(context).size.width *
-                                                                                0.04,
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontWeight: FontWeight.normal),
-                                                                      ),
-                                                                      SizedBox(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.01),
-                                                                      Icon(
-                                                                        Icons
-                                                                            .arrow_outward_outlined,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ]),
-                                                              ),
-                                                            ),
-                                                      SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.35,
-                                                      )
-                                                    ]),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                ],
-                              ),
-                            ),
-                          )));
+                      builder: (context) => Interior(
+                        urls: urls,
+                        images: images,
+                        txts: txts,
+                        description: description,
+                        first: first,
+                        second: second,
+                        third: third,
+                        fourth: fourth,
+                        fifth: fifth,
+                        imglist: imglist,
+                        utube:utube
+                      )
+                      ));
         },
         child: Hero(
           tag: images,

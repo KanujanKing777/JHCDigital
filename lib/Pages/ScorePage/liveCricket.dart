@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -8,10 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScore.dart';
-import 'package:concentric_transition/concentric_transition.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScoreBB.dart';
 import 'package:jhc_app/widgets/menus.dart';
-import 'package:jhc_app/main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_lib;
 
@@ -66,7 +62,6 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
           // Assuming your data is stored in the 'value' property
           final data = snapshot.data!.snapshot.value;
           final screenHeight = MediaQuery.of(context).size.height;
-          final screenWidth = MediaQuery.of(context).size.width;
 
           final chooseLanguage =
               ChooseLanguage(); // Create an instance of ChooseLanguage

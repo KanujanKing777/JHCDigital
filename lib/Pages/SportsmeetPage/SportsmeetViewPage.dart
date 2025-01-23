@@ -1,10 +1,9 @@
-import 'dart:ui';
-import 'package:firebase_database/ui/firebase_sorted_list.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // For launching URLs
+import 'package:jhc_app/Pages/SportsmeetPage/firstsecondthird.dart';
+import 'dart:ui';
 
 class ViewPageSportsmeet extends StatelessWidget {
-  final String txts; // Title text for AppBar
+  final String txts; 
   final String images; // URL of the image
   final String first; // Content text
     final String second; // Content text
@@ -31,138 +30,94 @@ final String description;
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 66,
-        backgroundColor: Colors.black,
-        title: Text(
-          txts,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ClipRect(
-              child: Image.network(images),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [],
+   return Scaffold(
+  appBar: AppBar(
+    toolbarHeight: 66,
+    backgroundColor: Colors.black,
+    title: Text(
+      txts,
+      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+    ),
+  ),
+  body: SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        // Image section
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: 
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          child: Image.network(
+            images,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 250,
+          ),
+        )),
+        
+        // Content Section
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                    child: Container(
-                      color: Colors.black.withOpacity(0.1),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                description,
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 15, top: 15, bottom: 5),
-                              child: Text(
-                                "1st Place: ${first}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 15, bottom: 5),
-                              child: Text(
-                                "2nd Place: ${second}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 15, bottom: 5),
-                              child: Text(
-                                "3rd Place: ${third}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 15, bottom: 5),
-                              child: Text(
-                                "4th Place: ${fourth}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.only(left: 15, bottom: 15),
-                              child: Text(
-                                "5th Place: ${fifth}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width *
-                                      0.045,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.35,
-                            ),
-                          ],
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  color: Colors.black.withOpacity(0.3),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        // Description text
+                        Text(
+                          description,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      ),
+          
+                        SizedBox(height: 20),
+                        
+                        buildRankingText("1st", first),
+                        buildRankingText("2nd", second),
+                        buildRankingText("3rd", third),
+                        buildRankingText("4th", fourth),
+                        buildRankingText("5th", fifth),
+                        
+                        SizedBox(height: 30),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      ],
+    ),
+  ),
+);
+
+// Helper method to create ranking texts
+
+
   }
+  
 }

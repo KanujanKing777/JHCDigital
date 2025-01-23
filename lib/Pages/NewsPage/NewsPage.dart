@@ -1,106 +1,112 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:jhc_app/main.dart';
-import 'package:jhc_app/Pages/NewsPage/NewsPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:jhc_app/Pages/infoPage.dart';
-import 'package:jhc_app/widgets/menus.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'dart:ui';
-import 'package:flutter/services.dart';
-import 'package:jhc_app/Pages/Calendar/calendar.dart';
-import 'package:jhc_app/Pages/NewsPage/newNewsPage.dart';
 import 'package:jhc_app/widgets/breakingCard.dart';
-final firebaseApp = Firebase.app();
-FirebaseDatabase rtdb = FirebaseDatabase.instanceFor(
-    app: firebaseApp,
-    databaseURL: 'https://latestjhcapp-default-rtdb.firebaseio.com/');
-DatabaseReference refSports = FirebaseDatabase.instance.ref('URLs/');
-final client = true;
+
+final Future<FirebaseApp> firebaseApp = Firebase.initializeApp();
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class NewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-          stream: refSports.onValue,
-          builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-            if (snapshot.hasData &&
-                snapshot.data != null &&
-                snapshot.data!.snapshot.value != null) {
-              // Assuming your data is stored in the 'value' property
-              final data = snapshot.data!.snapshot.value;
-              final screenHeight = MediaQuery.of(context).size.height;
-              final screenWidth = MediaQuery.of(context).size.width;
+    return FutureBuilder(
+      future: firebaseApp,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return StreamBuilder<QuerySnapshot>(
+            stream: firestore.collection('News').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
 
-              String jsonData = jsonEncode(data);
-              Map<String, dynamic> urllists = json.decode(jsonData);
-              List<String> urls = [];
-              List<String> imgURLs = [];
-              List<String> txts = [];
+                List<String> urls = [];
+                List<String> imgURLs = [];
+                List<List<String>> imgURLlists = [];
+                List<String> txts = [];
+                List<String> utubes = [];
 
-              urllists.forEach((index, value) {
-                String fun = urllists[index]['url'];
-                if (!fun.isEmpty) {
-                  urls.add(fun);
-                }
-                String funi = urllists[index]['images'][0];
-                if (!funi.isEmpty) {
-                  imgURLs.add(funi);
-                }
-                String funt = urllists[index]['text'];
-                if (!funt.isEmpty) {
-                  txts.add(funt);
-                }
-              });
+                snapshot.data!.docs.forEach((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
 
-              return Container(
-                padding: EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF000000), // Pure black
-                                Color(0xFF001020), // Pure black
+                  String? fun = data['url'];
+                  if (fun != null && fun.isNotEmpty) {
+                    urls.add(fun);
+                  }
 
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: 
-              SingleChildScrollView(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: urls.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return BreakingNewsCard(urls: urls[index], images: imgURLs[index], txts: txts[index]);
-                    },
+                  List<dynamic>? images = data['images'];
+                  if (images != null && images.isNotEmpty) {
+                    imgURLs.add(images[0].toString());
+                    imgURLlists.add(images.map((e) => e.toString()).toList());
+                  }
+
+                  String? funt = data['text'];
+                  if (funt != null && funt.isNotEmpty) {
+                    txts.add(funt);
+                  }
+
+                  String? utube = data['utube'];
+                  if (utube != null && utube.isNotEmpty) {
+                    utubes.add(utube);
+                  }
+                });
+                return Container(
+                  padding: EdgeInsets.all(8.0),
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF000000), // Pure black
+                        Color(0xFF001020), // Pure black
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
-                ],
-              ))
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemCount: urls.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return BreakingNewsCard(
+                               urls: urls[index],
+                              images: imgURLs[index],
+                              txts: txts[index],
+                              imglist: imgURLlists[index],
+                              utube: utubes[index],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.white,
+                    size: 150,
+                  ),
+                );
+              }
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: Colors.white,
+              size: 150,
+            ),
+          );
+        }
+      },
     );
-    } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: Colors.white,
-                  size: 150,
-                ),
-              ); // Loading indicator while waiting for data
-            }
-          },
-        );
   }
 }

@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jhc_app/Pages/ScorePage/liveCricket.dart';
-import 'package:gradient_widgets/gradient_widgets.dart';
-import 'package:jhc_app/widgets/ImageProvider.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScoreCricket.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+// ignore: must_be_immutable
 class SecondPage extends StatelessWidget {
   int etotalRunsTeam1 = 0;
   int etotalRunsTeam2 = 0;
@@ -510,7 +506,7 @@ class SecondPage extends StatelessWidget {
                                           sigmaX: 15, sigmaY: 15),
                                       child: Container(
                                         height:
-                                            MediaQuery.of(context).size.height *
+                                            screenHeight *
                                                 0.25,
                                         decoration: BoxDecoration(
                                             color:
@@ -578,16 +574,16 @@ class SecondPage extends StatelessWidget {
                                                     children: [
                                                       CachedNetworkImage(
                                                         imageUrl:eTeam1Logo,
-                                                        height: MediaQuery.of(context).size.height * 0.12,
-                                                        width: MediaQuery.of(context).size.height * 0.12,
+                                                        height: screenHeight * 0.12,
+                                                        width: screenHeight * 0.12,
                                                       ),
                                                       SizedBox(
                                                         width: 3,
                                                       ),
                                                       CachedNetworkImage(
                                                         imageUrl:eTeam2Logo,
-                                                        height: MediaQuery.of(context).size.height * 0.12,
-                                                        width: MediaQuery.of(context).size.height * 0.12,  
+                                                        height: screenHeight * 0.12,
+                                                        width: screenHeight * 0.12,  
                                                       ),
                                                     ],
                                                   ),
@@ -636,7 +632,7 @@ class SecondPage extends StatelessWidget {
                                   height: 20,
                                 ),
                                 Container(
-                                                                    margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                                                                    margin: EdgeInsets.all(screenWidth * 0.02),
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
@@ -657,9 +653,9 @@ class SecondPage extends StatelessWidget {
                                       child:
                                 Container(
                                   margin: EdgeInsets.all(
-                                      MediaQuery.of(context).size.width * 0.01),
+                                      screenWidth * 0.01),
                                   padding: EdgeInsets.all(25),
-                                  width: MediaQuery.of(context).size.width,
+                                  width: screenWidth,
                                  
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -687,10 +683,10 @@ class SecondPage extends StatelessWidget {
                                   ),
                                 ),
                                 ))),SizedBox(
-                                    height: MediaQuery.of(context).size.height *
+                                    height: screenHeight *
                                         0.01),
                                 Container(
-                                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                                  margin: EdgeInsets.all(screenWidth * 0.02),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   boxShadow: [
@@ -709,9 +705,9 @@ class SecondPage extends StatelessWidget {
                                       color: Colors.white.withOpacity(0.1),
                                       child:Container(
                                   margin: EdgeInsets.all(
-                                      MediaQuery.of(context).size.width * 0.01),
+                                      screenWidth * 0.01),
                                   padding: EdgeInsets.all(25),
-                                  width: MediaQuery.of(context).size.width,
+                                  width: screenWidth,
                                   
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -818,7 +814,7 @@ class SecondPage extends StatelessWidget {
                                              
                               Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.15,
+                                    screenHeight * 0.15,
                                 
                                 margin: EdgeInsets.all(3),
                                 padding: EdgeInsets.all(8),
@@ -833,8 +829,8 @@ class SecondPage extends StatelessWidget {
                                         ),
                                         CachedNetworkImage(
                                                         imageUrl:eTeam1Logo,
-                                                        height: MediaQuery.of(context).size.height * 0.09,
-                                                        width: MediaQuery.of(context).size.height * 0.09,
+                                                        height: screenHeight * 0.09,
+                                                        width: screenHeight * 0.09,
                                                         fit: BoxFit.cover,
                                                       ),
                                         SizedBox(
@@ -888,7 +884,7 @@ class SecondPage extends StatelessWidget {
                                       child:
                               Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.15,
+                                    screenHeight * 0.15,
                                
                                 padding: EdgeInsets.all(8),
                                 margin: EdgeInsets.all(3),
@@ -901,8 +897,8 @@ class SecondPage extends StatelessWidget {
                                         SizedBox(width: 10),
                                         CachedNetworkImage(
                                                         imageUrl:eTeam2Logo,
-                                                        height: MediaQuery.of(context).size.height * 0.09,
-                                                        width: MediaQuery.of(context).size.height * 0.09,
+                                                        height: screenHeight * 0.09,
+                                                        width: screenHeight * 0.09,
                                                         fit: BoxFit.cover,
                                                       ),
                                         SizedBox(width: 15),
