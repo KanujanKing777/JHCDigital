@@ -11,7 +11,6 @@ class ViewPageSportsmeet extends StatelessWidget {
   final String fourth; // Content text
   final String fifth; // Content text
 final String description;
-  final String urls; // URL for the button
 
   // Constructor with required parameters
   ViewPageSportsmeet({
@@ -24,7 +23,6 @@ final String description;
     required this.fourth,
     required this.fifth,
 
-    required this.urls,
   });
 
   @override

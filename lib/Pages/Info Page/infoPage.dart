@@ -47,7 +47,7 @@ class InfoPage extends StatelessWidget {
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * 0.015),
                   Text(
-                    'JHC Sports',
+                    'JHC Digital',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

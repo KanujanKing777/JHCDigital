@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jhc_app/Pages/ScorePage/liveCricket.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScoreCricket.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: must_be_immutable
 class SecondPage extends StatelessWidget {
@@ -18,15 +18,14 @@ class SecondPage extends StatelessWidget {
   String eoverpointball = "";
   String eoverpointball1 = "";
   String eoverpointball2 = "";
-  String liveScoreE;
-  String matchName = "";
+  String matchName;
   String ebatter = "";
   String eballer = "";
   String eTotalScoreTeam1;
   String eTotalScoreTeam2;
   String eTeam1Logo;
   String eTeam2Logo;
-
+  String matchid;
   bool fun = false;
 
   DatabaseReference refSports = FirebaseDatabase.instance.ref('Sports/');
@@ -34,16 +33,12 @@ class SecondPage extends StatelessWidget {
   SecondPage({
     required this.eTeam1,
     required this.eTeam2,
-    required this.liveScoreE,
     required this.matchName,
     required this.eTotalScoreTeam1,
     required this.eTotalScoreTeam2,
     required this.eTeam1Logo,
     required this.eTeam2Logo,
-    required this.eoverpointball1,
-    required this.eoverpointball2,
-    required this.etotalRunsTeam1,
-    required this.etotalRunsTeam2,
+    required this.matchid
   });
 
   @override
@@ -68,7 +63,6 @@ class SecondPage extends StatelessWidget {
             List<int> totalWicketTeam2 = [];
             List<int> totalRunsTeam1 = [];
             List<int> totalRunsTeam2 = [];
-            List<String> overpointball = [];
             List<String> overpointball1 = [];
             List<String> overpointball2 = [];
 
@@ -76,25 +70,14 @@ class SecondPage extends StatelessWidget {
             List<String> Baller = [];
             List<String> Team1 = [];
             List<String> Team2 = [];
-            List<String> Team1Logo = [];
-            List<String> Team2Logo = [];
-            List<String> MatchName = [];
-            List<String> MatchType = [];
             String newLastOverKey = "";
             String lastballkey = "";
             int i = 0;
-            int match = 0;
-            List<String> Team1Points = [];
-            List<String> Team2Points = [];
-            List<String> Team1Shooters = [];
-            List<String> Team2Shooters = [];
-            List<String> imgPathList = [];
-            String imgpath = "assets/images/tennis.jpg";
-            String _getimgpath() {
-              return imgPathList[currentPage];
-            }
+            
 
             liveScore.forEach((key, value) {
+              print("is live : " + liveScore[matchName].toString());
+              
               String currentBattingTeam = liveScore[matchName]['Details']['Team A'];
 
               liveScore[matchName]['Stats'].forEach((key2, value2) {
@@ -287,10 +270,8 @@ class SecondPage extends StatelessWidget {
                       (totalRunsBallersTeam1[currentBaller] ?? 0) +
                           liveScoreE3[over][ball]['runs'];
                   if (liveScoreE3[over][ball]['wicket'] != null) {
-                    String outType = liveScoreE3[over][ball]['wicket'].toString();
                     if (liveScoreE3[over][ball]['wicket'].toString() !=
                         "NotOut") {
-                      String outBy = liveScoreE3[over][ball]['outby'].toString();
                       ballersTeam1[liveScoreE3[over][ball]['baller']] =
                           (ballersTeam1[liveScoreE3[over][ball]['baller']] ??
                                   0) +
@@ -346,12 +327,10 @@ class SecondPage extends StatelessWidget {
                           liveScoreE4[over][ball]['runs'];
 
                   if (liveScoreE4[over][ball]['wicket'] != null) {
-                    String outType =
-                        liveScoreE4[over][ball]['wicket'].toString();
+                    
 
                     if (liveScoreE4[over][ball]['wicket'].toString() !=
                         "NotOut") {
-                      String outBy = liveScoreE4[over][ball]['outby'].toString();
                       ballersTeam2[currentBaller] =
                           (ballersTeam2[currentBaller] ?? 0) + 1;
                       String currentBall =
@@ -382,15 +361,9 @@ class SecondPage extends StatelessWidget {
             List<num> team1BallersWickets = ballersTeam1.values.toList();
             List<String> team2BallersNames = ballersTeam2.keys.toList();
             List<num> team2BallersWickets = ballersTeam2.values.toList();
-            // liveScoreE3.forEach((over, balls) {
-            //   liveScoreE3[over].forEach((ball, data){
-            //     battersTeam1.add(liveScoreE3[over][ball]['batter'].toString());
-            //     ballersTeam1.add(liveScoreE3[over][ball]['baller'].toString());
-            //   });
-            // },);
+            
             ebatter = battersTeam1.keys.toList().last.toString();
             eballer = battersTeam2.keys.toList().last.toString();
-            int kanu = 1;
             if(totalRunsTeam1.isEmpty){
               totalRunsTeam1.add(0);
             }
@@ -457,12 +430,12 @@ class SecondPage extends StatelessWidget {
             } else {
               return SafeArea(
                 child: DefaultTabController(
-                  length: 2,
+                  length: (matchid == "match")?2:3,
                   child: 
                   Scaffold(
                     backgroundColor: Colors.black,
                     appBar: AppBar(
-                      title: Text("$matchName",
+                      title: Text(matchName.toUpperCase(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -482,6 +455,9 @@ class SecondPage extends StatelessWidget {
                           Tab(
                             text: "SUMMARY",
                           ),
+                          if(matchid != "match")Tab(
+                            text: "SQUAD",
+                          ),
                           Tab(
                             text: "SCORECARD",
                           ),
@@ -499,6 +475,9 @@ class SecondPage extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
+                                SizedBox(
+                                  height: 15,
+                                ),
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(0),
                                     child: BackdropFilter(
@@ -513,19 +492,26 @@ class SecondPage extends StatelessWidget {
                                                 Colors.black.withOpacity(0.1)),
                                         child: Stack(
                                           children: <Widget>[
-                                            Image.asset(
-                                                "assets/images/new_background.jpg",
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                fit: BoxFit.cover),
+                                            
                                             Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                          200, 22, 22, 22)),
+                                margin: EdgeInsets.all(screenWidth * 0.02),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color.fromARGB(100, 22, 21, 25)
+                                          .withOpacity(0.2),
+                                      spreadRadius: 5,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Container(
+                                      color: Colors.white.withOpacity(0.1),
+                                      
                                               child: Column(
                                                 children: <Widget>[
                                                   SizedBox(
@@ -537,7 +523,7 @@ class SecondPage extends StatelessWidget {
                                                             .spaceEvenly,
                                                     children: [
                                                       Text(
-                                                        "$eTeam1",
+                                                        eTeam1.toUpperCase(),
                                                         style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: MediaQuery.of(
@@ -553,7 +539,7 @@ class SecondPage extends StatelessWidget {
                                                         width: 3,
                                                       ),
                                                       Text(
-                                                        "$eTeam2",
+                                                        eTeam2.toUpperCase(),
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: MediaQuery.of(
@@ -622,18 +608,17 @@ class SecondPage extends StatelessWidget {
                                                     ],
                                                   ),
                                                 ],
-                                              ),
+                                              ),),),
                                             ),
                                           ],
                                         ),
                                       ),
                                     )),
                                 SizedBox(
-                                  height: 20,
+                                  height: 15,
                                 ),
                                 Container(
-                                                                    margin: EdgeInsets.all(screenWidth * 0.02),
-
+                                margin: EdgeInsets.all(screenWidth * 0.02),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   boxShadow: [
@@ -784,6 +769,134 @@ class SecondPage extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if(matchid != "match")Padding(
+  padding: const EdgeInsets.all(16.0),
+  child: Container(
+    padding: const EdgeInsets.all(16.0),
+    
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+        FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('Cricket')
+              .doc(matchid)
+              .get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError || !snapshot.hasData) {
+              return const Center(child: Text("Error fetching data"));
+            }
+
+            var data = snapshot.data!.data() as Map<String, dynamic>;
+            List<dynamic> team1Players = data['team1players'] ?? [];
+            List<dynamic> team2Players = data['team2players'] ?? [];
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Team 1 Players List
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         Center(child:Text(
+                          eTeam1,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                        const SizedBox(height: 8),
+                        for (int i = 0; i < team1Players.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    team1Players[i],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Team 2 Players List
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         Center(child:Text(
+                          eTeam2,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                        const SizedBox(height: 8),
+                        for (int i = 0; i < team2Players.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    team2Players[i],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  ),
+),
                         SingleChildScrollView(
                           child: Column(
                             children: <Widget>[

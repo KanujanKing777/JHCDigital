@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jhc_app/widgets/view.dart';
 import 'package:jhc_app/widgets/youtubeplayer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -131,15 +132,20 @@ class _Interior extends State<Interior> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      // Handle image tap
+                      Navigator.pushReplacement(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => ImageFromUrl(imageUrl: imglist[index])
+                        )
+                      );
                     },
-                    child: Padding(
+                    child: Container(
                       padding: EdgeInsets.all(16.0),
                       child:ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
                       child: Image.network(
                         imglist[index],
-                        fit: BoxFit.cover,
+                        fit: BoxFit.cover ,
                       ),
                     )),
                   );

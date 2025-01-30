@@ -87,7 +87,6 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                             fifth: fifth,
                             txts: txts,
                             images: images,
-                            urls: urls,
                             description: description,
                           )))
               : Navigator.push(
@@ -109,60 +108,62 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                       ));
         },
         child: Hero(
-          tag: images,
-          child: Container(
-            margin: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.025,
-              bottom: MediaQuery.of(context).size.height * 0.009,
-            ),
-            height: MediaQuery.of(context).size.height * 0.33,
-            padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(images),
-                ),
-                border: Border.all(width: 0)),
-            width: double.infinity,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, Colors.black],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    txts.split(',')[0],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    "$urls",
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  )
-                ],
-              ),
+  tag: images,
+  child: LayoutBuilder(
+    builder: (context, constraints) {
+      return Container(
+        margin: EdgeInsets.symmetric(
+          vertical: constraints.maxHeight * 0.02,
+        ),
+        height: constraints.maxHeight * 0.43,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(images),
+          ),
+          border: Border.all(width: 0),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            gradient: LinearGradient(
+              colors: [Colors.transparent, Colors.black],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
-        ));
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                txts.split(',')[0],
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: constraints.maxWidth * 0.045,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                "$urls",
+                style: TextStyle(
+                  color: Colors.white54,
+                  fontSize: constraints.maxWidth * 0.035,
+                  fontWeight: FontWeight.normal,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+)
+);
   }
 }

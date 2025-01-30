@@ -63,7 +63,7 @@ class NewsPageHome extends StatelessWidget {
                   ),
                   options: carousel_lib.CarouselOptions(
                     aspectRatio: 16 / 9,
-                    height: screenHeight * 0.31,
+                    height: screenHeight * 0.51,
                     autoPlay: false,
                     enableInfiniteScroll: true,
                     enlargeCenterPage: true,

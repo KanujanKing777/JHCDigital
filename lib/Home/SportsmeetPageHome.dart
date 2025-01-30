@@ -1,39 +1,23 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'dart:ui';
-import 'package:flutter/services.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_lib;
 import 'package:jhc_app/widgets/breakingCard.dart';
 
-
 final firebaseApp = Firebase.app();
-FirebaseDatabase rtdb = FirebaseDatabase.instanceFor(
-    app: firebaseApp,
-    databaseURL: 'https://latestjhcapp-default-rtdb.firebaseio.com/');
-DatabaseReference refSports = FirebaseDatabase.instance.ref('Sportsmeet2024/');
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+CollectionReference sportsCollection = firestore.collection('Sportsmeet2024 UGeneral');
 
 class SportsPageHome extends StatelessWidget {
-  Map<String, dynamic> convertMap(Map<Object?, Object?> input) {
-  return input.map((key, value) {
-    // Ensure key is a String and cast value to dynamic
-    return MapEntry(key.toString(), value);
-  });
-}
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: refSports.onValue,
-      builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-        if (snapshot.hasData &&
-            snapshot.data != null &&
-            snapshot.data!.snapshot.value != null) {
-          // Assuming your data is stored in the 'value' property
-          final data = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+      stream: sportsCollection.snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
           final screenHeight = MediaQuery.of(context).size.height;
-          final urllists = convertMap(data);
+          final docs = snapshot.data!.docs;
 
           List<String> urls = [];
           List<String> imgURLs = [];
@@ -43,40 +27,44 @@ class SportsPageHome extends StatelessWidget {
           List<String> third = [];
           List<String> fourth = [];
           List<String> fifth = [];
-
           List<String> txts = [];
 
-          urllists.forEach((eventName, eventDetails) {
-          //   String eventKey = data!.keys.elementAt(index);
-          // Map<String, String> eventDetails = data[eventKey] ?? {};
-            txts.add(eventDetails['title']);
-            urls.add('1st Place ' + eventDetails['first']);
-            imgURLs.add(eventDetails['image']);
-            descriptions.add(eventDetails['description']);
+          for (var doc in docs) {
+            var eventData = doc.data() as Map<String, dynamic>;
+            txts.add(eventData['title'] ?? '');
+            urls.add('1st Place ' + (eventData['first'] ?? ''));
+            imgURLs.add(eventData['image'] ?? '');
+            descriptions.add(eventData['description'] ?? '');
+            first.add(eventData['first'] ?? '');
+            second.add(eventData['second'] ?? '');
+            third.add(eventData['third'] ?? '');
+            fourth.add(eventData['fourth'] ?? '');
+            fifth.add(eventData['fifth'] ?? '');
+          }
 
-            first.add(eventDetails['first']);
-            second.add(eventDetails['second']);
-            third.add(eventDetails['third']);
-            fourth.add(eventDetails['fourth']);
-            fifth.add(eventDetails['fifth']);
-
-        
-          });
-
-          return 
-          carousel_lib.CarouselSlider.builder(
-            itemCount: urls.length, 
-            itemBuilder: (context, index, id) =>
-                      BreakingNewsCard(urls: urls[index],images: imgURLs[index],txts: txts[index], first: first[index], second: second[index], third: third[index], fourth: fourth[index], fifth: fifth[index], description: descriptions[index],), 
+          return carousel_lib.CarouselSlider.builder(
+            
+            itemCount: urls.length,
+            itemBuilder: (context, index, id) => BreakingNewsCard(
+              urls: urls[index],
+              images: imgURLs[index],
+              txts: txts[index],
+              first: first[index],
+              second: second[index],
+              third: third[index],
+              fourth: fourth[index],
+              fifth: fifth[index],
+              description: descriptions[index],
+            ),
             options: carousel_lib.CarouselOptions(
               aspectRatio: 16 / 9,
-              height: screenHeight*0.31,
+              height: screenHeight * 0.51,
               autoPlay: false,
               enableInfiniteScroll: true,
               enlargeCenterPage: true,
-            )
-                  
-    );} else if (snapshot.hasError) {
+            ),
+          );
+        } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           return Center(
@@ -84,7 +72,7 @@ class SportsPageHome extends StatelessWidget {
               color: Colors.white,
               size: 150,
             ),
-          ); // Loading indicator while waiting for data
+          );
         }
       },
     );

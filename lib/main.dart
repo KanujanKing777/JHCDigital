@@ -2,15 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jhc_app/Pages/ScorePage/liveCricket.dart';
+import 'package:jhc_app/Pages/ScorePage/Sportspage.dart';
 import 'package:jhc_app/Pages/ShopPage/ShopPage.dart';
 import 'package:jhc_app/Pages/Info%20Page/infoPage.dart';
 import 'package:jhc_app/Pages/NewsPage/NewsPage.dart';
 import 'package:jhc_app/Home/RealHomePage.dart';
-
+import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -19,13 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'JHC App',
+      title: 'JHC Digital',
       home:  MyHomePage(selectedindex: 0,),
     );
   }
 }
 
-// ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
   int selectedindex = 0;
   MyHomePage({required this.selectedindex});
@@ -42,66 +43,66 @@ class _MyHomePageState extends State<MyHomePage> {
   int sselectedIndex = 0;
 
   _MyHomePageState({required this.sselectedIndex});
-  final homepages = [RealHomePage(), LiveScoreWidgetCricket(parameter: false,), NewsPage(), ShopPage()];
+  final homepages = [RealHomePage(), SportsPage(), NewsPage(), ShopPage()];
   
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-            title: 'JHC',
+            title: 'JHC Digital',
             theme: ThemeData.dark(),
             debugShowCheckedModeBanner: false,
             home: DefaultTabController(
               length: 5,
               child: Scaffold(
-                appBar: AppBar(
-                  flexibleSpace: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color.fromARGB(255, 19, 24, 26), // Start Color
-                          const Color.fromARGB(255, 11, 17, 21),  // End Color
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: Color.fromARGB(255, 0, 0, 0),
-                  iconTheme: IconThemeData(
-                    color: Colors.white, // Change the color here
-                  ),
-                  title: Text(
-                    'JHC Sports App',
-                    style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height * 0.0275,
-                        color: Colors.white),
-                    selectionColor: Colors.white,
-                  ),
-                  centerTitle: true,
-                  toolbarHeight: MediaQuery.of(context).size.height * 0.09,
-                  toolbarOpacity: 0.7,
-                  titleSpacing: 5,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(0),
-                    bottomLeft: Radius.circular(0),
-                  )),
-                  actions: <Widget>[
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => InfoPage()),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.info,
-                        color: Colors.white,
-                      ),
-                      tooltip: 'Info',
-                    )
-                  ],
-                ),
+                // appBar: AppBar(
+                //   flexibleSpace: Container(
+                //     decoration: BoxDecoration(
+                //       gradient: LinearGradient(
+                //         colors: [
+                //           const Color.fromARGB(255, 19, 24, 26), // Start Color
+                //           const Color.fromARGB(255, 11, 17, 21),  // End Color
+                //         ],
+                //         begin: Alignment.topLeft,
+                //         end: Alignment.bottomRight,
+                //       ),
+                //     ),
+                //   ),
+                //   backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                //   iconTheme: IconThemeData(
+                //     color: Colors.white, // Change the color here
+                //   ),
+                //   title: Text(
+                //     'JHC Digital',
+                //     style: TextStyle(
+                //         fontSize: MediaQuery.of(context).size.height * 0.025,
+                //         color: Colors.white),
+                //     selectionColor: Colors.white,
+                //   ),
+                //   centerTitle: true,
+                //   toolbarHeight: MediaQuery.of(context).size.height * 0.09,
+                //   toolbarOpacity: 0.7,
+                //   titleSpacing: 5,
+                //   shape: const RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.only(
+                //     bottomRight: Radius.circular(0),
+                //     bottomLeft: Radius.circular(0),
+                //   )),
+                //   actions: <Widget>[
+                //     IconButton(
+                //       onPressed: () {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(builder: (context) => InfoPage()),
+                //         );
+                //       },
+                //       icon: const Icon(
+                //         Icons.info,
+                //         color: Colors.white,
+                //       ),
+                //       tooltip: 'Info',
+                //     )
+                //   ],
+                // ),
                 body: homepages.elementAt(sselectedIndex),
                 bottomNavigationBar: BottomNavigationBar(
                     selectedLabelStyle: TextStyle(fontSize: 16,), // Define text style for selected label

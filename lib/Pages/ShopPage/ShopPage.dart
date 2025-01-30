@@ -41,7 +41,6 @@ class ShopPage extends StatelessWidget {
                     descriptions.add(text);
                   }
                 });
-                print(imgURLs[0]);
 
                 return Container(
                   padding: EdgeInsets.all(8.0),

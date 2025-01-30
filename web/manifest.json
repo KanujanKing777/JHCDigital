@@ -1,11 +1,11 @@
 {
-    "name": "jhc_app",
-    "short_name": "jhc_app",
+    "name": "JHC Digital",
+    "short_name": "JHC Digital",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "An App to digitalize JHC",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
