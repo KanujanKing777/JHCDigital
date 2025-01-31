@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jhc_app/Pages/ScorePage/liveCricketPage.dart';
 import 'package:jhc_app/Pages/SportsmeetPage/liveSportsmeetPage.dart';
 
 class Sportsmeetdedicated extends StatefulWidget {

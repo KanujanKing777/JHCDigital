@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jhc_app/Pages/SportsmeetPage/firstsecondthird.dart';
 import 'dart:ui';
+import 'package:jhc_app/widgets/view.dart';
 
 class ViewPageSportsmeet extends StatelessWidget {
   final String txts; 
@@ -34,7 +35,8 @@ final String description;
     backgroundColor: Colors.black,
     title: Text(
       txts,
-      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+      style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.height * 0.035
+, fontWeight: FontWeight.bold),
     ),
   ),
   body: SingleChildScrollView(
@@ -47,13 +49,24 @@ final String description;
           child: 
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          child: Image.network(
+          child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => ImageFromUrl(imageUrl: images)
+                        )
+                      );
+                    },
+                    child: Image.network(
             images,
             fit: BoxFit.cover,
             width: double.infinity,
-            height: 250,
+            height: MediaQuery.of(context).size.width < 800 
+                ? MediaQuery.of(context).size.width * 0.52  
+                : MediaQuery.of(context).size.height * 0.85,
           ),
-        )),
+        ))),
         
         // Content Section
         Padding(

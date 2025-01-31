@@ -7,16 +7,56 @@ import 'package:jhc_app/widgets/breakingCard.dart';
 
 final firebaseApp = Firebase.app();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-CollectionReference sportsCollection = firestore.collection('Sportsmeet2024 UGeneral');
 
-class SportsPageHome extends StatelessWidget {
+// ignore: must_be_immutable
+class SportsmeetPageHome extends StatelessWidget {
+  String fun;
+
+  SportsmeetPageHome({required this.fun});
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference sportsCollection = firestore.collection('Sportsmeet2024 U$fun');
+
     return StreamBuilder(
-      stream: sportsCollection.snapshots(),
+      stream: sportsCollection.orderBy("timestamp", descending: true)
+        .limit(3).snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasData && snapshot.data != null) {
-          final screenHeight = MediaQuery.of(context).size.height;
+        try {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: Colors.white,
+                size: 150,
+              ),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Something went wrong!", style: TextStyle(color: Colors.white)),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data == null || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.9), // Transparent background
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                ),
+                child: Center(child:Text(
+                  "Events have not started yet",
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                )),
+              ),
+            );
+          }
+
           final docs = snapshot.data!.docs;
 
           List<String> urls = [];
@@ -43,7 +83,6 @@ class SportsPageHome extends StatelessWidget {
           }
 
           return carousel_lib.CarouselSlider.builder(
-            
             itemCount: urls.length,
             itemBuilder: (context, index, id) => BreakingNewsCard(
               urls: urls[index],
@@ -58,21 +97,30 @@ class SportsPageHome extends StatelessWidget {
             ),
             options: carousel_lib.CarouselOptions(
               aspectRatio: 16 / 9,
-              height: screenHeight * 0.51,
+              height: MediaQuery.of(context).size.width < 800 
+                ? MediaQuery.of(context).size.width * 0.52  
+                : MediaQuery.of(context).size.height * 0.85,
               autoPlay: false,
-              enableInfiniteScroll: true,
+              enableInfiniteScroll: false,
               enlargeCenterPage: true,
             ),
           );
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
+        } catch (error) {
           return Center(
-            child: LoadingAnimationWidget.staggeredDotsWave(
-              color: Colors.white,
-              size: 150,
-            ),
-          );
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2), // Transparent background
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  border: Border.all(color: Colors.white.withOpacity(0.5)), // Border
+                ),
+                child: Text(
+                  "Events have not started yet",
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            );
         }
       },
     );

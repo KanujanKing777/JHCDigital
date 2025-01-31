@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 
 
+// ignore: must_be_immutable
 class MyTableWidget extends StatelessWidget {
   final int rowCount;
   final teamshootersnames;

@@ -73,6 +73,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
       required this.utube});
   @override
   Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+
     return InkWell(
         onTap: () {
           (urls.startsWith('1st'))
@@ -143,7 +145,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                 txts.split(',')[0],
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: constraints.maxWidth * 0.045,
+                  fontSize:  MediaQuery.of(context).size.width < 800 
+    ? screenHeight* 0.035 : screenHeight * 0.045,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -152,7 +155,8 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                 "$urls",
                 style: TextStyle(
                   color: Colors.white54,
-                  fontSize: constraints.maxWidth * 0.035,
+                  fontSize: MediaQuery.of(context).size.width < 800 
+    ? screenHeight * 0.025 : screenHeight * 0.035,
                   fontWeight: FontWeight.normal,
                 ),
                 overflow: TextOverflow.ellipsis,

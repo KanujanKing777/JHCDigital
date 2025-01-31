@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+
 
 class ImageFromUrl extends StatelessWidget {
   final String imageUrl;
@@ -9,8 +11,14 @@ class ImageFromUrl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
-        child: Image.network(imageUrl, fit: BoxFit.fitWidth,),
+        child: PhotoView(
+  imageProvider: NetworkImage(imageUrl),
+  minScale: PhotoViewComputedScale.contained,
+  maxScale: PhotoViewComputedScale.covered,
+)
+
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'dart:ui';
 
 
 
+// ignore: must_be_immutable
 class MyTableWidget extends StatelessWidget {
   final int rowCount;
   final whatisit;

@@ -30,7 +30,7 @@ class RealHomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildSectionHeader(context, "Sportsmeet 2024", Sportsmeetdedicated(), titleFontSize),
-                SportsPageHome(),
+                SportsmeetPageHome(fun: "General",),
                 SizedBox(height: screenHeight * 0.05),
                 _buildSectionHeader(context, "Recent Events", MyHomePage(selectedindex: 2), titleFontSize),
                 NewsPageHome(),

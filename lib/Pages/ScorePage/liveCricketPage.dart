@@ -66,7 +66,6 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                             final teamB = data['Team B'] ?? "Unknown";
                             final team1Logo = data['team1logo'] ?? "";
                             final team2Logo = data['team2logo'] ?? "";
-                            final date = data['Date'] ?? "Unknown Date";
                             final matchName =
                                 data['MatchName'] ?? "Unknown Match";
                             final team1Score =
