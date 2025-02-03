@@ -71,12 +71,17 @@ class NewsPage extends StatelessWidget {
                           physics: ScrollPhysics(),
                           itemCount: urls.length,
                           itemBuilder: (BuildContext context, index) {
-                            return BreakingNewsCard(
+                            return Container(
+                              margin: EdgeInsets.all(10),
+                              height: MediaQuery.of(context).size.height * 0.27,
+                              child:
+                            BreakingNewsCard(
                                urls: urls[index],
                               images: imgURLs[index],
                               txts: txts[index],
                               imglist: imgURLlists[index],
                               utube: utubes[index],
+                            )
                             );
                           },
                         ),

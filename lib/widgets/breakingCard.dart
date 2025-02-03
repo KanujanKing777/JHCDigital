@@ -145,8 +145,7 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                 txts.split(',')[0],
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize:  MediaQuery.of(context).size.width < 800 
-    ? screenHeight* 0.035 : screenHeight * 0.045,
+                  fontSize: screenHeight * 0.022,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -155,8 +154,7 @@ class _BreakingNewsCardState extends State<BreakingNewsCard> {
                 "$urls",
                 style: TextStyle(
                   color: Colors.white54,
-                  fontSize: MediaQuery.of(context).size.width < 800 
-    ? screenHeight * 0.025 : screenHeight * 0.035,
+                  fontSize: screenHeight * 0.02,
                   fontWeight: FontWeight.normal,
                 ),
                 overflow: TextOverflow.ellipsis,

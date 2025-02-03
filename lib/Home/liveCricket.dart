@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScore.dart';
@@ -35,6 +34,7 @@ class PageData {
       this.iconColor});
 }
 
+// ignore: must_be_immutable
 class LiveScoreWidgetCricket extends StatefulWidget {
   bool parameter = false;
 
@@ -59,7 +59,6 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
         if (snapshot.hasData &&
             snapshot.data != null &&
             snapshot.data!.snapshot.value != null) {
-          // Assuming your data is stored in the 'value' property
           final data = snapshot.data!.snapshot.value;
           final screenHeight = MediaQuery.of(context).size.height;
 
@@ -67,7 +66,6 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
               ChooseLanguage(); // Create an instance of ChooseLanguage
           final selectedIndexes = chooseLanguage.getSelectedIndex();
 
-          // Convert DataSnapshot to JSON
           String jsonData = jsonEncode(data);
           Map<String, dynamic> originalLiveScore = json.decode(jsonData);
           Map<String, dynamic> liveScore = originalLiveScore['Cricket'];
@@ -96,7 +94,7 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
           List<String> Team1Shooters = [];
           List<String> Team2Shooters = [];
           List<String> imgPathList = [];
-          String imgpath = "assets/images/tennis.jpg";
+          String imgpath = "";
           String _getimgpath() {
             return imgPathList[currentPage];
           }
@@ -254,7 +252,6 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
                 Team1Logo.add(liveScore[key]['Details']['Team1logo']);
                 Team2Logo.add(liveScore[key]['Details']['Team2logo']);
                 Team2Points.add("0");
-                Map<String, dynamic> loosu = liveScore[key]['Stats'];
                 liveScore[key]['Stats'].forEach((key2, value2) {
                   if (liveScore[key]['Stats'][key2]['Shooting Team'] ==
                       Team1.last) {
@@ -288,21 +285,7 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
               imgPathList.add("assets/images/gradient5.jpg");
             }
           }
-          final pagees = [];
-          for (int i = 0; i < match; i++) {
-            final a = PageData(
-              icon: null,
-              title: MatchName[i],
-              bgColor: Colors.white,
-              textColor: Colors.white,
-            );
-            pagees.add(a);
-          }
-          final a = PageData(
-            title: " ",
-            bgColor: Color(0xff3b1791),
-            textColor: Colors.white,
-          );
+         
           return (parameter== false)?SingleChildScrollView(
   child: Container(
     padding: EdgeInsets.all(0),
@@ -447,7 +430,7 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "${Team2[index].toUpperCase()}",
+                                                  Team2[index].toUpperCase(),
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize:
@@ -583,6 +566,7 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
+                                height: MediaQuery.of(context).size.height * 0.27,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
@@ -786,9 +770,9 @@ class _LiveScoreWidgetCricket extends State<LiveScoreWidgetCricket> {
                 },
                 options: carousel_lib.CarouselOptions(
                     aspectRatio: 16 / 16,
-                    height: screenHeight*0.51,
+                    height: screenHeight*0.35,
                     enableInfiniteScroll: true,
-                    autoPlay: false,
+                    autoPlay: true,
                     enlargeCenterPage: true,
                   )
               );

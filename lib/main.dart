@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jhc_app/Pages/Info%20Page/infoPage.dart';
 import 'package:jhc_app/Pages/ScorePage/Sportspage.dart';
 import 'package:jhc_app/Pages/ShopPage/ShopPage.dart';
 import 'package:jhc_app/Pages/NewsPage/NewsPage.dart';
 import 'package:jhc_app/Home/RealHomePage.dart';
-import 'package:jhc_app/Temporary%20Sportsmeet/TemporarySportsmeetpage.dart';
 import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,11 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.white, // Change the color here
                   ),
                   title: Text(
-                    'Sportsmeet 2025',
+                    'JHC Digital',
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height * 0.035,
+                        fontSize: MediaQuery.of(context).size.height * 0.03,
                         color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.normal),
                     selectionColor: Colors.white,
                   ),
                   centerTitle: true,
@@ -89,58 +90,57 @@ class _MyHomePageState extends State<MyHomePage> {
                     bottomRight: Radius.circular(0),
                     bottomLeft: Radius.circular(0),
                   )),
-                  // actions: <Widget>[
-                  //   IconButton(
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(builder: (context) => InfoPage()),
-                  //       );
-                  //     },
-                  //     icon: const Icon(
-                  //       Icons.info,
-                  //       color: Colors.white,
-                  //     ),
-                  //     tooltip: 'Info',
-                  //   )
-                  // ],
+                  actions: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => InfoPage()),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                      tooltip: 'Info',
+                    )
+                  ],
                 ),
-                // body: homepages.elementAt(sselectedIndex),
-                body: RealSportsmeetHomePage(),
-                // bottomNavigationBar: BottomNavigationBar(
-                //     selectedLabelStyle: TextStyle(fontSize: 16,), // Define text style for selected label
-                //     unselectedLabelStyle: TextStyle(fontSize: 16),    
-                //     showUnselectedLabels: false,                 
-                //     backgroundColor: Color.fromARGB(255, 12, 12, 12),
-                //     unselectedItemColor: Colors.white,
-                //     currentIndex: sselectedIndex,         
-                //     elevation: MediaQuery.of(context).size.height * 0.1,
-                //     fixedColor: const Color.fromARGB(255, 68, 208, 255),
-                //     type: BottomNavigationBarType.fixed,
-                //     items:  [
-                //       BottomNavigationBarItem(
-                //         label: "Home",
-                //         icon: Icon(FontAwesomeIcons.house, size:MediaQuery.of(context).size.width * 0.06),
-                //       ),
-                //       BottomNavigationBarItem(
-                //         label: "Sports",
-                //         icon: Icon(FontAwesomeIcons.basketball, size:MediaQuery.of(context).size.width * 0.06),
-                //       ),
-                //       BottomNavigationBarItem(
-                //         label: "News",
-                //         icon: Icon(FontAwesomeIcons.newspaper, size:MediaQuery.of(context).size.width * 0.06),
-                //         activeIcon: Icon(FontAwesomeIcons.solidNewspaper, size:MediaQuery.of(context).size.width * 0.06),
-                //       ),
-                //       BottomNavigationBarItem(
-                //         label: "Shop",
-                //         icon: Icon(FontAwesomeIcons.shop, size:MediaQuery.of(context).size.width * 0.06),
-                //       ),
-                //     ],
-                //     onTap: (int indexOfItem) {
-                //       setState(() {
-                //         sselectedIndex = indexOfItem;
-                //       });
-                //     }),
+                body: homepages.elementAt(sselectedIndex),
+                bottomNavigationBar: BottomNavigationBar(
+                    selectedLabelStyle: TextStyle(fontSize: 16,), // Define text style for selected label
+                    unselectedLabelStyle: TextStyle(fontSize: 16),    
+                    showUnselectedLabels: false,                 
+                    backgroundColor: Color.fromARGB(255, 12, 12, 12),
+                    unselectedItemColor: Colors.white,
+                    currentIndex: sselectedIndex,         
+                    elevation: MediaQuery.of(context).size.height * 0.1,
+                    fixedColor: const Color.fromARGB(255, 68, 208, 255),
+                    type: BottomNavigationBarType.fixed,
+                    items:  [
+                      BottomNavigationBarItem(
+                        label: "Home",
+                        icon: Icon(FontAwesomeIcons.house, size:MediaQuery.of(context).size.width * 0.06),
+                      ),
+                      BottomNavigationBarItem(
+                        label: "Sports",
+                        icon: Icon(FontAwesomeIcons.basketball, size:MediaQuery.of(context).size.width * 0.06),
+                      ),
+                      BottomNavigationBarItem(
+                        label: "News",
+                        icon: Icon(FontAwesomeIcons.newspaper, size:MediaQuery.of(context).size.width * 0.06),
+                        activeIcon: Icon(FontAwesomeIcons.solidNewspaper, size:MediaQuery.of(context).size.width * 0.06),
+                      ),
+                      BottomNavigationBarItem(
+                        label: "Shop",
+                        icon: Icon(FontAwesomeIcons.shop, size:MediaQuery.of(context).size.width * 0.06),
+                      ),
+                    ],
+                    onTap: (int indexOfItem) {
+                      setState(() {
+                        sselectedIndex = indexOfItem;
+                      });
+                    }),
               ),
             ));        
   }

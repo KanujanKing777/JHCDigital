@@ -97,9 +97,7 @@ class SportsmeetPageHome extends StatelessWidget {
             ),
             options: carousel_lib.CarouselOptions(
               aspectRatio: 16 / 9,
-              height: MediaQuery.of(context).size.width < 800 
-                ? MediaQuery.of(context).size.width * 0.52  
-                : MediaQuery.of(context).size.height * 0.85,
+              height:MediaQuery.of(context).size.height * 0.25,
               autoPlay: false,
               enableInfiniteScroll: false,
               enlargeCenterPage: true,

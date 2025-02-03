@@ -42,7 +42,7 @@ class _RealSportsmeetHomePageState extends State<RealSportsmeetHomePage> {
         String fifth = doc['fifth'];
         String description = doc['description'];
         DateTime now = DateTime.now();
-  DateTime targetTime = DateTime(now.year, now.month, now.day, 18, 00); // 4:30 PM
+        DateTime targetTime = DateTime(now.year, now.month, now.day, 18, 00); // 4:30 PM
 
   if (now.isBefore(targetTime)) {
     showPopup3(context);
@@ -76,7 +76,6 @@ void showPopup(BuildContext context, String message, String image, String first,
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // Adjust blur intensity
             child: GestureDetector(
               onTap: () {
-                Navigator.pop(context); // Dismiss the dialog when tapping outside
               },
               child: Container(
                 color: Colors.black.withOpacity(0.5), // Adds a dim background

@@ -104,7 +104,8 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                   );
                                 }
                               },
-                              child: Container(
+                              child: 
+                              Container(
                                 margin: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),

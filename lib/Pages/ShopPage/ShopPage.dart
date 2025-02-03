@@ -64,12 +64,15 @@ class ShopPage extends StatelessWidget {
                           physics: ScrollPhysics(),
                           itemCount: prices.length,
                           itemBuilder: (BuildContext context, index) {
-                            return BreakingNewsCard(
+                            return Container(
+                              margin: EdgeInsets.all(10),
+                              height: MediaQuery.of(context).size.height * 0.27,
+                              child:BreakingNewsCard(
                               urls: prices[index],
                               images: imgURLs[index],
                               txts: descriptions[index],
                               imglist: [imgURLs[index]],
-                            );
+                            ));
                           },
                         ),
                       ],

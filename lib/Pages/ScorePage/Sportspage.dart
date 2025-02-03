@@ -7,12 +7,11 @@ class SportsPage extends StatefulWidget {
 }
 
 class _SportsPage extends State<SportsPage> {
-  List<String> sports = ["Cricket", "Basketball", "Football", "Hockey"];
+  List<String> sports = ["Cricket", "Basketball", "Football"];
   List<String> sportsImages = [
-    "https://i.imgur.com/wKZ5KoU.jpeg",
-    "https://i.imgur.com/63vJ5BY.png",
-    "https://i.imgur.com/KbnUcWg.jpeg",
-    "https://i.imgur.com/PgyJIzE.png"
+    "images/cricket.jpeg",
+    "images/basketball.png",
+    "images/football.jpeg"
   ];
 
   @override
@@ -54,7 +53,7 @@ class _SportsPage extends State<SportsPage> {
                     );
                   },
                   child: AnimatedContainer(
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     margin: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
@@ -70,7 +69,8 @@ class _SportsPage extends State<SportsPage> {
                         ),
                       ],
                     ),
-                    child: Stack(
+                    child: 
+                    Stack(
                       children: [
                         // Sports Image
                         ClipRRect(
@@ -78,7 +78,7 @@ class _SportsPage extends State<SportsPage> {
                             top: Radius.circular(20),
                             bottom: Radius.circular(20),
                           ),
-                          child: Image.network(
+                          child: Image.asset(
                             sportsImages[index],
                             height: MediaQuery.of(context).size.height * 0.5,
                             width: double.infinity,
