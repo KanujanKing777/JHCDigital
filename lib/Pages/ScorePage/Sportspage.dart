@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:jhc_app/Pages/ScorePage/liveCricketPage.dart';
 
 class SportsPage extends StatefulWidget {
+  final ad;
+  SportsPage({
+    required this.ad
+  });
   @override
-  State<SportsPage> createState() => _SportsPage();
+  State<SportsPage> createState() => _SportsPage(ad:ad);
 }
 
 class _SportsPage extends State<SportsPage> {
+  final ad;
+  _SportsPage({
+    required this.ad
+  });
+
   List<String> sports = ["Cricket", "Basketball", "Football"];
   List<String> sportsImages = [
     "images/cricket.jpeg",
@@ -48,7 +57,7 @@ class _SportsPage extends State<SportsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            LiveScoreWidgetCricketPage(parameter: sports[index]),
+                            LiveScoreWidgetCricketPage(parameter: sports[index], ad:ad),
                       ),
                     );
                   },

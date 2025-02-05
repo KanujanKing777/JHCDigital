@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,16 +13,17 @@ final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class LiveScoreWidgetCricketPage extends StatefulWidget {
   final String parameter;
-  LiveScoreWidgetCricketPage({required this.parameter});
+  final ad;
+  LiveScoreWidgetCricketPage({required this.parameter, required this.ad});
 
   @override
   State<LiveScoreWidgetCricketPage> createState() =>
-      _LiveScoreWidgetCricketPage(parameter: parameter);
+      _LiveScoreWidgetCricketPage(parameter: parameter, ad:ad);
 }
 class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
   final String parameter;
-
-  _LiveScoreWidgetCricketPage({required this.parameter});
+  final ad;
+  _LiveScoreWidgetCricketPage({required this.parameter, required this.ad});
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +102,7 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                       eTeam1Logo: team1Logo, 
                                       eTeam2Logo: team2Logo, 
                                       matchid: matchid,
+                                      ad:ad
                                       ))
                                   );
                                 }

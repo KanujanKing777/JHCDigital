@@ -12,17 +12,18 @@ final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class Sportsmeetinside extends StatefulWidget {
   final String parameter;
-
-  Sportsmeetinside({required this.parameter});
+final ad;
+  Sportsmeetinside({required this.parameter, required this.ad});
 
   @override
   State<Sportsmeetinside> createState() =>
-      _LiveScoreWidgetCricketPage(parameter: parameter);
+      _LiveScoreWidgetCricketPage(parameter: parameter, ad:ad);
 }
 class _LiveScoreWidgetCricketPage extends State<Sportsmeetinside> {
   final String parameter;
+  final ad;
 
-  _LiveScoreWidgetCricketPage({required this.parameter});
+  _LiveScoreWidgetCricketPage({required this.parameter, required this.ad});
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +102,7 @@ class _LiveScoreWidgetCricketPage extends State<Sportsmeetinside> {
                                       eTeam1Logo: team1Logo, 
                                       eTeam2Logo: team2Logo, 
                                       matchid: matchid,
+                                      ad:ad
                                       ))
                                   );
                                 }

@@ -27,7 +27,7 @@ class SecondPage extends StatelessWidget {
   String eTeam2Logo;
   String matchid;
   bool fun = false;
-
+  final ad;
   DatabaseReference refSports = FirebaseDatabase.instance.ref('Sports/');
 
   SecondPage({
@@ -38,7 +38,8 @@ class SecondPage extends StatelessWidget {
     required this.eTotalScoreTeam2,
     required this.eTeam1Logo,
     required this.eTeam2Logo,
-    required this.matchid
+    required this.matchid,
+    required this.ad
   });
 
   @override
@@ -469,6 +470,23 @@ class SecondPage extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       dragStartBehavior: DragStartBehavior.start,
                       children: <Widget>[
+                        InkWell(
+                          onTap: ()async{
+                            CollectionReference appleCollection = FirebaseFirestore.instance.collection('apple');
+
+  DocumentSnapshot documentSnapshot = await appleCollection.doc('fun').get();
+
+  if (documentSnapshot.exists) {
+    // Access the 'show' field from the document
+    var showData = documentSnapshot['show'];
+    if(showData == "yes"){
+                              ad();
+
+    }
+  }
+                            
+                          },
+                        child:
                         Container(
                           margin: EdgeInsets.all(0),
                           child: SingleChildScrollView(
@@ -768,7 +786,7 @@ class SecondPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
+                        )),
                         if(matchid != "match")Padding(
   padding: const EdgeInsets.all(16.0),
   child: Container(

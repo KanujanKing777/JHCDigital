@@ -8,12 +8,22 @@ import 'package:jhc_app/Home/NewsPageHome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RealHomePage extends StatefulWidget {
+  final ads;
+
+  RealHomePage({
+    required this.ads
+  });
+
   @override
-  _RealHomePageState createState() => _RealHomePageState();
+  _RealHomePageState createState() => _RealHomePageState(ads: ads);
 }
 
 class _RealHomePageState extends State<RealHomePage> {
   String? lastShownId; // To track the last shown document
+  final ads;
+  _RealHomePageState({
+    required this.ads
+  });
 
   @override
   void initState() {
@@ -223,14 +233,14 @@ class _RealHomePageState extends State<RealHomePage> {
             child: Column(
               children: [
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Recent Events", MyHomePage(selectedindex: 2), titleFontSize),
+                _buildSectionHeader(context, "Recent Events", MyHomePage(selectedIndex: 2), titleFontSize),
                 SizedBox(height: screenHeight * 0.02),
                 NewsPageHome(),
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Recent Sports", MyHomePage(selectedindex: 1), titleFontSize),
-                LiveScoreWidgetCricket(parameter: true),
+                _buildSectionHeader(context, "Recent Sports", MyHomePage(selectedIndex: 1), titleFontSize),
+                LiveScoreWidgetCricket(parameter: true, ad:ads),
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Shop", MyHomePage(selectedindex: 3), titleFontSize),
+                _buildSectionHeader(context, "Shop", MyHomePage(selectedIndex: 3), titleFontSize),
                 SizedBox(height: screenHeight * 0.02),
                 ShopPageHome(),
               ],
