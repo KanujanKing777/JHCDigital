@@ -18,7 +18,6 @@ class NewsPage extends StatelessWidget {
             stream: firestore.collection('News').snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-
                 List<String> urls = [];
                 List<String> imgURLs = [];
                 List<List<String>> imgURLlists = [];
@@ -49,41 +48,45 @@ class NewsPage extends StatelessWidget {
                     utubes.add(utube);
                   }
                 });
-                return Container(
-                  padding: EdgeInsets.all(8.0),
-                  height: double.infinity,
-                  decoration: BoxDecoration(
+                return DecoratedBox(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xFF000000), // Pure black
-                        Color(0xFF001020), // Pure black
+                        Color(0xFF000000),
+                        Color(0xFF001020),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          itemCount: urls.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height * 0.27,
-                              child:
-                            BreakingNewsCard(
-                               urls: urls[index],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                      vertical: 16.0,
+                    ),
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverGrid(
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 600,
+                            mainAxisExtent:
+                                MediaQuery.of(context).size.width > 800
+                                    ? 400
+                                    : 300,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, index) => BreakingNewsCard(
+                              urls: urls[index],
                               images: imgURLs[index],
                               txts: txts[index],
                               imglist: imgURLlists[index],
                               utube: utubes[index],
-                            )
-                            );
-                          },
+                            ),
+                            childCount: urls.length,
+                          ),
                         ),
                       ],
                     ),

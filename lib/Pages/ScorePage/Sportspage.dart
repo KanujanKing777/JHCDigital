@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:jhc_app/Pages/ScorePage/liveCricketPage.dart';
 
 class SportsPage extends StatefulWidget {
-  final ad;
-  SportsPage({
-    required this.ad
-  });
+  
   @override
-  State<SportsPage> createState() => _SportsPage(ad:ad);
+  State<SportsPage> createState() => _SportsPage();
 }
 
 class _SportsPage extends State<SportsPage> {
-  final ad;
-  _SportsPage({
-    required this.ad
-  });
+  
 
   List<String> sports = ["Cricket", "Basketball", "Football"];
   List<String> sportsImages = [
@@ -57,12 +51,14 @@ class _SportsPage extends State<SportsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            LiveScoreWidgetCricketPage(parameter: sports[index], ad:ad),
+                            LiveScoreWidgetCricketPage(parameter: sports[index]),
                       ),
                     );
                   },
                   child: AnimatedContainer(
-                    height: MediaQuery.of(context).size.height * 0.4,
+height: MediaQuery.of(context).size.width > 800 
+    ? MediaQuery.of(context).size.height * 0.8  // Larger height for desktop
+    : MediaQuery.of(context).size.height * 0.4, // Default height for mobile
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     margin: EdgeInsets.symmetric(vertical: 30, horizontal: 15),

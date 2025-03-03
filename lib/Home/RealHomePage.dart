@@ -2,28 +2,18 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jhc_app/Home/ShopPageHome.dart';
-import 'package:jhc_app/Home/liveCricket.dart';
+import 'package:jhc_app/Home/live_cricket.dart';
 import 'package:jhc_app/main.dart';
 import 'package:jhc_app/Home/NewsPageHome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RealHomePage extends StatefulWidget {
-  final ads;
-
-  RealHomePage({
-    required this.ads
-  });
-
   @override
-  _RealHomePageState createState() => _RealHomePageState(ads: ads);
+  _RealHomePageState createState() => _RealHomePageState();
 }
 
 class _RealHomePageState extends State<RealHomePage> {
   String? lastShownId; // To track the last shown document
-  final ads;
-  _RealHomePageState({
-    required this.ads
-  });
 
   @override
   void initState() {
@@ -56,15 +46,27 @@ class _RealHomePageState extends State<RealHomePage> {
           });
 
           if (mounted && Win == 0) {
-
-            showPopup(context, MatchName, TeamA, TeamB, Team1logo, Team2logo, Team1score, Team2score);
+            showPopup(context, MatchName, TeamA, TeamB, Team1logo, Team2logo,
+                Team1score, Team2score);
           }
         }
       }
     });
   }
 
-  void showPopup(BuildContext context, String Matchname, String TeamA, String TeamB, String Team1logo, String Team2logo, String Team1score, String Team2score) {
+  void showPopup(
+      BuildContext context,
+      String Matchname,
+      String TeamA,
+      String TeamB,
+      String Team1logo,
+      String Team2logo,
+      String Team1score,
+      String Team2score) {
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isDesktop = screenWidth > 800;
+
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -85,124 +87,121 @@ class _RealHomePageState extends State<RealHomePage> {
             child: GestureDetector(
               onTap: () {},
               child: Dialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                child: 
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                                margin: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      spreadRadius: 5,
-                                      blurRadius: 10,
-                                      offset: Offset(0, 3),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: Container(
+                  width: isDesktop ? screenWidth * 0.5 : screenWidth * 0.9,
+                  height: isDesktop
+                      ? MediaQuery.of(context).size.height * 0.6
+                      : MediaQuery.of(context).size.height * 0.75,
+                  margin: EdgeInsets.all(isDesktop ? 25 : 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 5,
+                        blurRadius: 10,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        color: Colors.white.withOpacity(0.1),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(isDesktop
+                                  ? 30
+                                  : MediaQuery.of(context).size.height * 0.025),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    Matchname.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: isDesktop ? 34 : 29,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: Team1logo,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.1),
+                                    Text(
+                                      TeamA.toUpperCase(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                      ),
                                     ),
                                   ],
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10, sigmaY: 10),
-                                    child: Container(
-                                      color: Colors.white.withOpacity(0.1),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  Matchname.toUpperCase(),
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),                                               
-                                              ],
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  CachedNetworkImage(
-                                                    imageUrl: Team1logo,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.2,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.2,
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  Text(
-                                                    TeamA.toUpperCase(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "$Team1score - $Team2score",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  CachedNetworkImage(
-                                                    imageUrl: Team2logo,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.2,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.2,
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  Text(
-                                                    TeamB.toUpperCase(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 20),
-                                        ],
+                                Column(
+                                  children: [
+                                    Text(
+                                      "$Team1score - $Team2score",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 27,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
+                                Column(
+                                  children: [
+                                    CachedNetworkImage(
+                                      imageUrl: Team2logo,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.1),
+                                    Text(
+                                      TeamB.toUpperCase(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -217,11 +216,16 @@ class _RealHomePageState extends State<RealHomePage> {
       builder: (context, constraints) {
         double screenWidth = constraints.maxWidth;
         double screenHeight = constraints.maxHeight;
-        double titleFontSize = screenHeight * 0.03;
+        bool isDesktop = screenWidth > 800;
+        double titleFontSize =
+            isDesktop ? screenHeight * 0.04 : screenHeight * 0.03;
+        double horizontalPadding =
+            isDesktop ? screenWidth * 0.1 : screenWidth * 0.05;
 
         return Container(
           height: screenHeight,
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: screenWidth * 0.05),
+          padding:
+              EdgeInsets.symmetric(vertical: 16, horizontal: horizontalPadding),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF000000), Color(0xFF001020)],
@@ -233,16 +237,29 @@ class _RealHomePageState extends State<RealHomePage> {
             child: Column(
               children: [
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Recent Events", MyHomePage(selectedIndex: 2), titleFontSize),
+                _buildSectionHeader(context, "Recent Events",
+                    MyHomePage(selectedIndex: 2), titleFontSize),
                 SizedBox(height: screenHeight * 0.02),
-                NewsPageHome(),
+                Container(
+                  width: isDesktop ? screenWidth * 0.8 : screenWidth,
+                  child: NewsPageHome(),
+                ),
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Recent Sports", MyHomePage(selectedIndex: 1), titleFontSize),
-                LiveScoreWidgetCricket(parameter: true, ad:ads),
+                _buildSectionHeader(context, "Recent Sports",
+                    MyHomePage(selectedIndex: 1), titleFontSize),
+                Container(
+                  width: isDesktop ? screenWidth * 0.8 : screenWidth,
+                  child: LiveScoreWidgetCricket(parameter: true),
+                ),
                 SizedBox(height: screenHeight * 0.05),
-                _buildSectionHeader(context, "Shop", MyHomePage(selectedIndex: 3), titleFontSize),
+                _buildSectionHeader(context, "Shop",
+                    MyHomePage(selectedIndex: 3), titleFontSize),
                 SizedBox(height: screenHeight * 0.02),
-                ShopPageHome(),
+                Container(
+                  width: isDesktop ? screenWidth * 0.8 : screenWidth,
+                  child: ShopPageHome(),
+                ),
+                SizedBox(height: screenHeight * 0.05),
               ],
             ),
           ),
@@ -251,19 +268,28 @@ class _RealHomePageState extends State<RealHomePage> {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, Widget page, double fontSize) {
+  Widget _buildSectionHeader(
+      BuildContext context, String title, Widget page, double fontSize) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
         FloatingActionButton(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: Icon(Icons.arrow_outward_outlined, color: Colors.white),
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
+          child: Icon(
+            Icons.arrow_outward_outlined,
+            color: Colors.white,
+            size: fontSize * 1.2,
+          ),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => page)),
         ),
       ],
     );

@@ -43,7 +43,7 @@ class ShopPage extends StatelessWidget {
                 });
 
                 return Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(16.0),  // Increased padding
                   height: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -59,20 +59,49 @@ class ShopPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          itemCount: prices.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height * 0.27,
-                              child:BreakingNewsCard(
-                              urls: prices[index],
-                              images: imgURLs[index],
-                              txts: descriptions[index],
-                              imglist: [imgURLs[index]],
-                            ));
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            if (constraints.maxWidth > 800) {
+                              // Desktop Layout
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 1.5,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                ),
+                                itemCount: prices.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return BreakingNewsCard(
+                                    urls: prices[index],
+                                    images: imgURLs[index],
+                                    txts: descriptions[index],
+                                    imglist: [imgURLs[index]],
+                                  );
+                                },
+                              );
+                            } else {
+                              // Mobile Layout
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: prices.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    height: MediaQuery.of(context).size.height * 0.3,
+                                    child: BreakingNewsCard(
+                                      urls: prices[index],
+                                      images: imgURLs[index],
+                                      txts: descriptions[index],
+                                      imglist: [imgURLs[index]],
+                                    ),
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ],

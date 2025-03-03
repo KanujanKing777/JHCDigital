@@ -54,7 +54,9 @@ class ShopPageHome extends StatelessWidget {
                   ),
                   options: carousel_lib.CarouselOptions(
                     aspectRatio: 16 / 9,
-                    height: screenHeight * 0.25,
+height: MediaQuery.of(context).size.width > 800 
+    ? screenHeight * 0.6  // Larger height for desktop
+    : screenHeight * 0.25, // Default height for mobile
                     autoPlay: true,
                     enableInfiniteScroll: true,
                     enlargeCenterPage: true,

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jhc_app/Pages/ScorePage/extendedScore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,17 +12,15 @@ final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class LiveScoreWidgetCricketPage extends StatefulWidget {
   final String parameter;
-  final ad;
-  LiveScoreWidgetCricketPage({required this.parameter, required this.ad});
+  LiveScoreWidgetCricketPage({required this.parameter});
 
   @override
   State<LiveScoreWidgetCricketPage> createState() =>
-      _LiveScoreWidgetCricketPage(parameter: parameter, ad:ad);
+      _LiveScoreWidgetCricketPage(parameter: parameter);
 }
 class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
   final String parameter;
-  final ad;
-  _LiveScoreWidgetCricketPage({required this.parameter, required this.ad});
+  _LiveScoreWidgetCricketPage({required this.parameter});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,8 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
       appBar: AppBar(
         title: Text(parameter),
       ),
-      body: FutureBuilder(
+      body: 
+      FutureBuilder(
         future: firebaseApp,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
@@ -102,7 +100,6 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                       eTeam1Logo: team1Logo, 
                                       eTeam2Logo: team2Logo, 
                                       matchid: matchid,
-                                      ad:ad
                                       ))
                                   );
                                 }
@@ -133,13 +130,13 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(12.0),
+                                            padding: const EdgeInsets.all(15.0),
                                             child: Column(
                                               children: [
                                                 Text(
                                                   matchName.toUpperCase(),
                                                   style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 22,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -175,12 +172,12 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                                                 .width *
                                                             0.2,
                                                   ),
-                                                  SizedBox(height: 10),
+                                                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                                                   Text(
                                                     teamA.toUpperCase(),
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 16,
+                                                      fontSize: 20,
                                                     ),
                                                   ),
                                                 ],
@@ -191,7 +188,7 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                                     "$team1Score - $team2Score",
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 20,
+                                                      fontSize: 22,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -218,7 +215,7 @@ class _LiveScoreWidgetCricketPage extends State<LiveScoreWidgetCricketPage> {
                                                     teamB.toUpperCase(),
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 16,
+                                                      fontSize: 20,
                                                     ),
                                                   ),
                                                 ],
