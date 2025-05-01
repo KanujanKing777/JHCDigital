@@ -29,14 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(selectedIndex: 0),
-      builder: (context, child) {
-        return Stack(
-          children: [
-            child ?? Container(),
-            GlobalVideoListener(),
-          ],
-        );
-      },
+     
     );
   }
 }

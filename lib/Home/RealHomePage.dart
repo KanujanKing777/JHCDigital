@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jhc_app/Home/ShopPageHome.dart';
-import 'package:jhc_app/Home/live_cricket.dart';
+import 'package:jhc_app/Home/liveCricket.dart';
 import 'package:jhc_app/main.dart';
 import 'package:jhc_app/Home/NewsPageHome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
