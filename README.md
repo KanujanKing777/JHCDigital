@@ -64,7 +64,7 @@ Please ensure all contributions align with the educational mission and instituti
 This project was envisioned and developed by:
 
 - **Kanujan Piragadeesh**
-- **Ganeshananthan Karthigan**
+- **Karthigan Ganeshananthan**
 - **Abineethan**
 
 ---
