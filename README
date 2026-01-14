@@ -1,0 +1,80 @@
+# 🎓 JHC Digital
+
+**JHC Digital** is an open-source application built to modernize and digitalize the management of school events at **Jaffna Hindu College**.  
+It acts as a centralized digital hub for events, announcements, and institutional records—making school traditions accessible, organized, and future-proof.
+
+---
+
+## 📌 Table of Contents
+- [Project Overview](#-project-overview)
+- [Why JHC Digital?](#-why-jhc-digital)
+- [Key Features](#-key-features)
+- [Technology Stack](#-technology-stack)
+- [Contributing](#-contributing)
+- [Development Team](#-development-team)
+- [License](#-license)
+
+---
+
+## 📖 Project Overview
+JHC Digital bridges the gap between tradition and technology by bringing school event management into the digital era.  
+It is designed **specifically for Jaffna Hindu College**, keeping the institution’s culture, structure, and needs at its core.
+
+---
+
+## 🎯 Why JHC Digital?
+- 📂 Centralized event information  
+- ⏱️ Real-time updates and announcements  
+- 🏫 Designed exclusively for JHC workflows  
+- 🗃️ Long-term digital archiving of school history  
+
+---
+
+## ✨ Key Features
+- 📅 **Event Management** – Organize and track school ceremonies and functions  
+- 📜 **Digital Programs** – Interactive agendas and schedules  
+- 🔔 **Instant Notifications** – Timely announcements for students and staff  
+- 🎨 **User-Centric Design** – Simple, intuitive, and purpose-built  
+
+---
+
+## 🛠️ Technology Stack
+> *(Update this section as development progresses)*
+
+- Frontend: TBD  
+- Backend: TBD  
+- Database: TBD  
+
+---
+
+## 🤝 Contributing
+Contributions are welcome and appreciated!
+
+If you would like to contribute:
+1. Fork the repository  
+2. Create a feature branch  
+3. Commit your changes  
+4. Submit a Pull Request  
+
+Please ensure all contributions align with the educational mission and institutional values of Jaffna Hindu College.
+
+---
+
+## 👨‍💻 Development Team
+This project was envisioned and developed by:
+
+- **Kanujan Piragadeesh**
+- **Ganeshananthan Karthigan**
+- **Abineethan**
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0**  
+See the `LICENSE` file for details.
+
+---
+
+> _“Preserving tradition through technology.”_  
+> **— JHC Digital**
