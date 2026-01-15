@@ -49,7 +49,7 @@ This project was envisioned and developed by:
 
 - **Kanujan Piragadeesh**
 - **Karthigan Ganeshananthan**
-- **Sunthareswaran Abineethan**
+- **Abineethan Sunthareswaran**
 
 ---
 
