@@ -41,22 +41,9 @@ It is designed **specifically for Jaffna Hindu College**, keeping the institutio
 ## 🛠️ Technology Stack
 > *(Update this section as development progresses)*
 
-- Frontend: TBD  
-- Backend: TBD  
-- Database: TBD  
-
----
-
-## 🤝 Contributing
-Contributions are welcome and appreciated!
-
-If you would like to contribute:
-1. Fork the repository  
-2. Create a feature branch  
-3. Commit your changes  
-4. Submit a Pull Request  
-
-Please ensure all contributions align with the educational mission and institutional values of Jaffna Hindu College.
+- Frontend: Flutter  
+- Backend: Flutter  
+- Database: Firebase  
 
 ---
 
@@ -65,7 +52,7 @@ This project was envisioned and developed by:
 
 - **Kanujan Piragadeesh**
 - **Karthigan Ganeshananthan**
-- **Abineethan**
+- **Sunthareswaran Abineethan**
 
 ---
 
