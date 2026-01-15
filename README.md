@@ -10,7 +10,6 @@ It acts as a centralized digital hub for events, announcements, and institutiona
 - [Why JHC Digital?](#-why-jhc-digital)
 - [Key Features](#-key-features)
 - [Technology Stack](#-technology-stack)
-- [Contributing](#-contributing)
 - [Development Team](#-development-team)
 - [License](#-license)
 
@@ -39,8 +38,6 @@ It is designed **specifically for Jaffna Hindu College**, keeping the institutio
 ---
 
 ## 🛠️ Technology Stack
-> *(Update this section as development progresses)*
-
 - Frontend: Flutter  
 - Backend: Flutter  
 - Database: Firebase  
