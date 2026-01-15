@@ -60,5 +60,4 @@ See the `LICENSE` file for details.
 
 ---
 
-> _“Preserving tradition through technology.”_  
-> **— JHC Digital**
+> _“IT always seems Impossible, until IT's done.”_  
